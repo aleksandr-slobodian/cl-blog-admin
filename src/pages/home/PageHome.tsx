@@ -7,6 +7,8 @@ import {
   incrementByAmountAsync,
   selectCount,
 } from "../../state/counter";
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
 
 export const PageHome: React.FC = () => {
   const count = useAppSelector(selectCount);
@@ -17,26 +19,35 @@ export const PageHome: React.FC = () => {
       <h1>Homepage</h1>
       <div>{count}</div>
       <div>
-        <button onClick={() => dispatch(decrement())}>-</button>
-        <button onClick={() => dispatch(increment())}>+</button>
+        <Button variant="outlined" onClick={() => dispatch(decrement())}>
+          -
+        </Button>
+        <Button variant="outlined" onClick={() => dispatch(increment())}>
+          +
+        </Button>
       </div>
       <div>
         <div>
-          <input
+          <TextField
+            variant="outlined"
             type="text"
             value={incrementAmount}
             onChange={(event) =>
               setIncrementAmount(parseInt(event.target.value))
             }
           />
-          <button onClick={() => dispatch(incrementByAmount(incrementAmount))}>
+          <Button
+            variant="outlined"
+            onClick={() => dispatch(incrementByAmount(incrementAmount))}
+          >
             +++
-          </button>
-          <button
+          </Button>
+          <Button
+            variant="outlined"
             onClick={() => dispatch(incrementByAmountAsync(incrementAmount))}
           >
             delay +++
-          </button>
+          </Button>
         </div>
       </div>
     </div>

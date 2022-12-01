@@ -1,11 +1,12 @@
 import React from "react";
-import { Link, Outlet } from "react-router-dom";
+import { Outlet } from "react-router-dom";
+import Link from "@mui/material/Link";
 
 export const Layout: React.FC = () => {
   return (
     <div>
-      <Link to={"/"}>Home</Link>
-      <Link to={"/categories"}>Categories</Link>
+      <Link href={"/"}>Home</Link>
+      <Link href={"/categories"}>Categories</Link>
       <Outlet />
     </div>
   );
