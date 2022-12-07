@@ -3,6 +3,7 @@ import { Outlet } from "react-router-dom";
 import Link from "@mui/material/Link";
 import DarkModeSwitcher from "../../components/dark-mode-switcher/DarkModeSwitcher";
 import { useTranslation } from "react-i18next";
+import LangSwitcher from "../../components/lang-switcher/LangSwitcher";
 
 export const Layout: React.FC = () => {
   const { t } = useTranslation();
@@ -13,6 +14,9 @@ export const Layout: React.FC = () => {
       <div>{t("title")}</div>
       <Outlet />
       <DarkModeSwitcher />
+      <div>
+        <LangSwitcher />
+      </div>
     </div>
   );
 };
