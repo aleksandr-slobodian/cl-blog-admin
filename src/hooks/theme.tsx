@@ -1,11 +1,14 @@
 import { LinkProps } from "@mui/material/Link";
 import { createTheme } from "@mui/material/styles/";
+import useMediaQuery from "@mui/material/useMediaQuery";
 import React from "react";
 import { useMemo } from "react";
 import {
   Link as RouterLink,
   LinkProps as RouterLinkProps,
 } from "react-router-dom";
+import { useAppSelector } from "../hooks";
+import { selectDarkMode } from "../state/theme/themeSlice";
 
 const LinkBehavior = React.forwardRef<
   HTMLAnchorElement,
@@ -16,6 +19,9 @@ const LinkBehavior = React.forwardRef<
 });
 
 export const useTheme = () => {
+  const darkMode = useAppSelector(selectDarkMode);
+  const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
+
   return useMemo(
     () =>
       createTheme({
@@ -47,9 +53,16 @@ export const useTheme = () => {
           },
         },
         palette: {
-          mode: "light",
+          mode:
+            darkMode === undefined
+              ? prefersDarkMode
+                ? "dark"
+                : "light"
+              : darkMode
+              ? "dark"
+              : "light",
         },
       }),
-    []
+    [darkMode, prefersDarkMode]
   );
 };
