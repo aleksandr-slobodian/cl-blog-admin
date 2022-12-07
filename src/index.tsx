@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense } from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./App";
@@ -7,19 +7,22 @@ import { BrowserRouter } from "react-router-dom";
 import { store, persistor } from "./store";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
+import "./i18n/config";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
 root.render(
   <React.StrictMode>
-    <Provider store={store}>
-      <PersistGate loading={null} persistor={persistor}>
-        <BrowserRouter>
-          <App />
-        </BrowserRouter>
-      </PersistGate>
-    </Provider>
+    <Suspense fallback={"Loading..."}>
+      <Provider store={store}>
+        <PersistGate loading={null} persistor={persistor}>
+          <BrowserRouter>
+            <App />
+          </BrowserRouter>
+        </PersistGate>
+      </Provider>
+    </Suspense>
   </React.StrictMode>
 );
 
