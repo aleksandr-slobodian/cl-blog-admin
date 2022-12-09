@@ -36,6 +36,7 @@
   },
   "scripts": {
     "serve:dev": "react-scripts start & node server.js",
+    "serve:prod": "serve -s build & node server.js",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",

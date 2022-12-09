@@ -1,6 +1,8 @@
 import { configureStore, combineReducers } from "@reduxjs/toolkit";
 import { persistReducer, persistStore } from "redux-persist";
+import { setupListeners } from "@reduxjs/toolkit/query";
 import storage from "redux-persist/lib/storage";
+import { usersApi } from "./services/users";
 import counterReducer from "./state/counter/counterSlice";
 import themeReducer from "./state/theme/themeSlice";
 
@@ -13,13 +15,21 @@ const rootPersistConfig = {
 const reducers = combineReducers({
   counter: counterReducer,
   theme: themeReducer,
+
+  [usersApi.reducerPath]: usersApi.reducer,
 });
 
 const _persistedReducer = persistReducer(rootPersistConfig, reducers);
 
 export const store = configureStore({
   reducer: _persistedReducer,
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({ serializableCheck: false }).concat(
+      usersApi.middleware
+    ),
 });
+
+setupListeners(store.dispatch);
 
 export const persistor = persistStore(store);
 

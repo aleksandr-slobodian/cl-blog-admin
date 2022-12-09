@@ -1,3 +1,5 @@
+import CircularProgress from "@mui/material/CircularProgress";
+import Box from "@mui/material/Box";
 import { useState } from "react";
 import { useDebounce } from "react-use";
 export const PageLoadingIndicator = () => {
@@ -14,7 +16,19 @@ export const PageLoadingIndicator = () => {
     return null;
   }
 
-  return <div>Loading page...</div>;
+  return (
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        flexGrow: 1,
+      }}
+    >
+      <CircularProgress />
+    </Box>
+  );
 };
 
 export default PageLoadingIndicator;
