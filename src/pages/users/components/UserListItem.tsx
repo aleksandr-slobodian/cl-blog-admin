@@ -13,7 +13,7 @@ import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 
 interface UserListItemProps {
   user: User;
-  deleteAction: (id: number) => void;
+  deleteAction: (id: string) => void;
   isDeleting: boolean;
 }
 

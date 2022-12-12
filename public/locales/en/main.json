@@ -1,3 +1,17 @@
 {
-  "title": "Welcome!"
+  "title": "Welcome!",
+  "form": {
+    "validation": {
+      "required": "Field is required",
+      "min": "Field should be of minimum {min} characters length",
+      "max": "Field should be of maximum {max} characters length"
+    },
+    "button": {
+      "create": "Create",
+      "update": "Update"
+    },
+    "label": {
+      "full-name": "Full name"
+    }
+  }
 }

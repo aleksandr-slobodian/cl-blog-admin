@@ -1,5 +1,5 @@
 import React, { Suspense } from "react";
-import { RouteObject } from "react-router-dom";
+import { Outlet, RouteObject } from "react-router-dom";
 import PageLoadingIndicator from "./components/page-loading-indicator/PageLoadingIndicator";
 import { Layout } from "./layouts/default";
 import { PageDefault } from "./pages/default";
@@ -12,6 +12,12 @@ const PageCategories = React.lazy(
   () => import("./pages/categories/PageCategories")
 );
 const PageUsers = React.lazy(() => import("./pages/users/PageUsers"));
+const PageUserCreate = React.lazy(
+  () => import("./pages/user-create/PageUserCreate")
+);
+const PageUserUpdate = React.lazy(
+  () => import("./pages/user-update/PageUserUpdate")
+);
 
 export const routes: RouteObject[] = [
   {
@@ -29,11 +35,33 @@ export const routes: RouteObject[] = [
       },
       {
         path: "/users",
-        element: (
-          <Suspense fallback={<PageLoadingIndicator />}>
-            <PageUsers />
-          </Suspense>
-        ),
+        element: <Outlet />,
+        children: [
+          {
+            index: true,
+            element: (
+              <Suspense fallback={<PageLoadingIndicator />}>
+                <PageUsers />
+              </Suspense>
+            ),
+          },
+          {
+            path: "add",
+            element: (
+              <Suspense fallback={<PageLoadingIndicator />}>
+                <PageUserCreate />
+              </Suspense>
+            ),
+          },
+          {
+            path: ":id",
+            element: (
+              <Suspense fallback={<PageLoadingIndicator />}>
+                <PageUserUpdate />
+              </Suspense>
+            ),
+          },
+        ],
       },
 
       { path: "*", element: <PageDefault /> },

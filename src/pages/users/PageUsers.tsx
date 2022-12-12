@@ -6,6 +6,7 @@ import { Pager } from "../../components/pager/Pager";
 import { useListUsersQuery } from "../../services/users";
 
 import { PageDefault } from "../default";
+import ToolbarTop from "./components/ToolbarTop";
 import UsersList from "./components/UsersList";
 
 export const PageUsers: React.FC = () => {
@@ -22,6 +23,7 @@ export const PageUsers: React.FC = () => {
 
   return (
     <Stack gap={3}>
+      <ToolbarTop />
       <UsersList users={data} />
       <Pager
         count={data?.length}

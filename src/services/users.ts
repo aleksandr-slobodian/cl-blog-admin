@@ -12,9 +12,23 @@ export const usersApi = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: API_BASE_URL }),
   tagTypes: ["Users"],
   endpoints: (builder) => ({
+    addPost: builder.mutation<User, Partial<User>>({
+      query(body) {
+        return {
+          url: API_PATH_USERS,
+          method: "POST",
+          body,
+        };
+      },
+      invalidatesTags: [{ type: "Users", id: "PARTIAL-LIST" }],
+    }),
+    getUser: builder.query<User, string>({
+      query: (id) => prepareEndpointPath(API_PATH_USER, { id }),
+      providesTags: (result, error, id) => [{ type: "Users", id }],
+    }),
     listUsers: builder.query<User[], number | void>({
       query: (page = 1) =>
-        `${API_PATH_USERS}?_page=${page}&_limit=${APP_ITEMS_PER_PAGE}`,
+        `${API_PATH_USERS}?_page=${page}&_limit=${APP_ITEMS_PER_PAGE}&_sort=name&_order=asc`,
       providesTags: (result) =>
         result
           ? [
@@ -23,7 +37,17 @@ export const usersApi = createApi({
             ]
           : [{ type: "Users", id: "PARTIAL-LIST" }],
     }),
-    deleteUser: builder.mutation<{ success: boolean; id: number }, number>({
+    updateUser: builder.mutation<User, Partial<User>>({
+      query(body) {
+        return {
+          url: prepareEndpointPath(API_PATH_USER, { id: body.id }),
+          method: "PUT",
+          body,
+        };
+      },
+      invalidatesTags: (result, error, { id }) => [{ type: "Users", id }],
+    }),
+    deleteUser: builder.mutation<{ success: boolean; id: string }, string>({
       query(id) {
         return {
           url: prepareEndpointPath(API_PATH_USER, { id }),
@@ -38,4 +62,10 @@ export const usersApi = createApi({
   }),
 });
 
-export const { useListUsersQuery, useDeleteUserMutation } = usersApi;
+export const {
+  useListUsersQuery,
+  useGetUserQuery,
+  useDeleteUserMutation,
+  useAddPostMutation,
+  useUpdateUserMutation,
+} = usersApi;
