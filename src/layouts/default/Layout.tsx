@@ -9,6 +9,8 @@ import {
   APP_PATH_HOME,
   APP_PATH_USERS,
 } from "../../config";
+import { ErrorBoundary } from "react-error-boundary";
+import ErrorFallback from "../../components/error-fallback/ErrorFallback";
 
 export const Layout: React.FC = () => {
   const { t } = useTranslation();
@@ -18,7 +20,9 @@ export const Layout: React.FC = () => {
       <Link href={APP_PATH_CATEGORIES}>Categories</Link>
       <Link href={APP_PATH_USERS}>Users</Link>
       <div>{t("title")}</div>
-      <Outlet />
+      <ErrorBoundary FallbackComponent={ErrorFallback}>
+        <Outlet />
+      </ErrorBoundary>
       <DarkModeSwitcher />
       <div>
         <LangSwitcher />
