@@ -12,6 +12,14 @@
     },
     "label": {
       "full-name": "Full name"
+    },
+    "error": {
+      "create": "Failed to create.",
+      "update": "Failed to update."
+    },
+    "success": {
+      "create": "Create successfully.",
+      "update": "Updated successfully."
     }
   }
 }

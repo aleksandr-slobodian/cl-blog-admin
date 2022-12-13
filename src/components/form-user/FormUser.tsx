@@ -8,6 +8,7 @@ import LoadingButton from "@mui/lab/LoadingButton";
 import Stack from "@mui/system/Stack";
 import { useTranslation } from "react-i18next";
 import { v4 as uuid } from "uuid";
+import { useSnackbar } from "notistack";
 import {
   useAddPostMutation,
   useUpdateUserMutation,
@@ -22,6 +23,8 @@ export const FormUser: React.FC<FormUserProps> = ({ values }) => {
   const [addUser] = useAddPostMutation();
   const [updatUser] = useUpdateUserMutation();
 
+  const { enqueueSnackbar } = useSnackbar();
+
   const formik = useFormik({
     initialValues: values,
     validationSchema: useFormUserValidationSchema(),
@@ -34,8 +37,13 @@ export const FormUser: React.FC<FormUserProps> = ({ values }) => {
           await addUser({ ...newValues, id }).unwrap();
           resetForm();
         }
+        enqueueSnackbar(t(!values.id ? "success.create" : "success.update"), {
+          variant: "success",
+        });
       } catch (error) {
-        console.warn(error);
+        enqueueSnackbar(t(!values.id ? "error.create" : "error.update"), {
+          variant: "error",
+        });
       }
       setSubmitting(false);
     },

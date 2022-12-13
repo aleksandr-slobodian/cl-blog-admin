@@ -9,15 +9,18 @@ import routes from "./routes";
 import { ThemeProvider } from "@mui/material/styles";
 import { useTheme } from "./hooks";
 import CssBaseline from "@mui/material/CssBaseline";
+import SnackBarProvider from "./components/snack-bar-provider/SnackBarProvider";
 
 function App() {
   const element = useRoutes(routes);
   const theme = useTheme();
   return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline enableColorScheme={true} />
-      <div className={styles?.App}>{element}</div>
-    </ThemeProvider>
+    <SnackBarProvider>
+      <ThemeProvider theme={theme}>
+        <CssBaseline enableColorScheme={true} />
+        <div className={styles?.App}>{element}</div>
+      </ThemeProvider>
+    </SnackBarProvider>
   );
 }
 
