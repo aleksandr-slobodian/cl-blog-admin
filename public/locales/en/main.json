@@ -15,11 +15,27 @@
     },
     "error": {
       "create": "Failed to create.",
-      "update": "Failed to update."
+      "update": "Failed to update.",
+      "delete": "Failed to delete."
     },
     "success": {
       "create": "Create successfully.",
-      "update": "Updated successfully."
+      "update": "Updated successfully.",
+      "delete": "Deleted successfully."
+    }
+  },
+  "dialog": {
+    "misc": {
+      "button": {
+        "disagree": "Disagree",
+        "agree": "Agree"
+      },
+      "title": {
+        "attention": "Attention"
+      },
+      "text": {
+        "delete": "Are you sure you want to delete \"{item}\". This operation cannot be undone."
+      }
     }
   }
 }

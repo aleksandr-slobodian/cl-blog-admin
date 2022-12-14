@@ -13,7 +13,7 @@ import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 
 interface UserListItemProps {
   user: User;
-  deleteAction: (id: string) => void;
+  deleteAction: (id: string, title: string) => void;
   isDeleting: boolean;
 }
 
@@ -43,7 +43,10 @@ export const UserListItem: React.FC<UserListItemProps> = ({
       disablePadding
       divider={true}
       secondaryAction={
-        <IconButton disabled={isDeleting} onClick={() => deleteAction(id)}>
+        <IconButton
+          disabled={isDeleting}
+          onClick={() => deleteAction(id, name)}
+        >
           <DeleteForeverIcon />
         </IconButton>
       }

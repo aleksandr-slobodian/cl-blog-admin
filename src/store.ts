@@ -4,6 +4,7 @@ import { setupListeners } from "@reduxjs/toolkit/query";
 import storage from "redux-persist/lib/storage";
 import { usersApi } from "./services/users";
 import counterReducer from "./state/counter/counterSlice";
+import dialogReduser from "./state/dialog/dialogSlice";
 import themeReducer from "./state/theme/themeSlice";
 
 const rootPersistConfig = {
@@ -13,6 +14,7 @@ const rootPersistConfig = {
 };
 
 const reducers = combineReducers({
+  dialog: dialogReduser,
   counter: counterReducer,
   theme: themeReducer,
 
