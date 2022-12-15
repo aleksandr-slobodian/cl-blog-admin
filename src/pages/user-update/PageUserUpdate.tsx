@@ -1,6 +1,6 @@
-import Stack from "@mui/system/Stack";
 import { useParams } from "react-router-dom";
 import FormUser from "../../components/form-user/FormUser";
+import PageContent from "../../components/page-content/PageContent";
 import PageLoadingIndicator from "../../components/page-loading-indicator/PageLoadingIndicator";
 import { useGetUserQuery } from "../../services/users";
 import { PageDefault } from "../default";
@@ -24,10 +24,10 @@ export const PageUserUpdate = () => {
   }
 
   return (
-    <Stack gap={3}>
+    <PageContent>
       <ToolbarTop />
       <FormUser values={data} />
-    </Stack>
+    </PageContent>
   );
 };
 

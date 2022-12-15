@@ -1,6 +1,6 @@
-import Stack from "@mui/system/Stack";
 import { useMemo } from "react";
 import FormUser from "../../components/form-user/FormUser";
+import PageContent from "../../components/page-content/PageContent";
 import { User } from "../../types/api";
 import ToolbarTop from "./components/ToolbarTop";
 
@@ -14,10 +14,10 @@ export const PageUserCreate = () => {
   );
 
   return (
-    <Stack gap={3}>
+    <PageContent>
       <ToolbarTop />
       <FormUser values={initValues} />
-    </Stack>
+    </PageContent>
   );
 };
 

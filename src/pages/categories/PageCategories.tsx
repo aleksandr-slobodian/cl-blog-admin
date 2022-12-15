@@ -1,7 +1,8 @@
 import React from "react";
+import PageContent from "../../components/page-content/PageContent";
 
 export const PageCategories: React.FC = () => {
-  return <div>Categories</div>;
+  return <PageContent>Categories</PageContent>;
 };
 
 export default PageCategories;

@@ -9,14 +9,16 @@ import {
 } from "../../state/counter";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
+import PageContent from "../../components/page-content/PageContent";
+import Typography from "@mui/material/Typography";
 
 export const PageHome: React.FC = () => {
   const count = useAppSelector(selectCount);
   const dispatch = useAppDispatch();
   const [incrementAmount, setIncrementAmount] = useState<number>(2);
   return (
-    <div>
-      <h1>Homepage</h1>
+    <PageContent>
+      <Typography variant="h1">Homapage</Typography>
       <div>{count}</div>
       <div>
         <Button variant="outlined" onClick={() => dispatch(decrement())}>
@@ -50,7 +52,7 @@ export const PageHome: React.FC = () => {
           </Button>
         </div>
       </div>
-    </div>
+    </PageContent>
   );
 };
 

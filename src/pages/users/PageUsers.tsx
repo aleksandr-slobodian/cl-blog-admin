@@ -1,5 +1,5 @@
-import { Stack } from "@mui/material";
 import React, { useState } from "react";
+import PageContent from "../../components/page-content/PageContent";
 import PageLoadingIndicator from "../../components/page-loading-indicator/PageLoadingIndicator";
 import { Pager } from "../../components/pager/Pager";
 
@@ -22,16 +22,22 @@ export const PageUsers: React.FC = () => {
   }
 
   return (
-    <Stack gap={3}>
-      <ToolbarTop />
-      <UsersList users={data} />
-      <Pager
-        count={data?.length}
-        page={page}
-        isFetching={isFetching}
-        setPage={(page) => setPage(page)}
-      />
-    </Stack>
+    <>
+      <PageContent>
+        <ToolbarTop />
+      </PageContent>
+      <PageContent disableGutters={true} isTop={false} sx={{ mt: 2 }}>
+        <UsersList users={data} />
+      </PageContent>
+      <PageContent isTop={false} sx={{ mt: 2 }}>
+        <Pager
+          count={data?.length}
+          page={page}
+          isFetching={isFetching}
+          setPage={(page) => setPage(page)}
+        />
+      </PageContent>
+    </>
   );
 };
 
