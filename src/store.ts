@@ -6,15 +6,17 @@ import { usersApi } from "./services/users";
 import counterReducer from "./state/counter/counterSlice";
 import dialogReduser from "./state/dialog/dialogSlice";
 import themeReducer from "./state/theme/themeSlice";
+import authReducer from "./state/auth/authSlice";
 import mainDrawerReducer from "./state/main-drawer/mainDrawerSlice";
 
 const rootPersistConfig = {
   key: "root",
   storage: storage,
-  whitelist: ["theme"],
+  whitelist: ["theme", "auth"],
 };
 
 const reducers = combineReducers({
+  auth: authReducer,
   mainDrawer: mainDrawerReducer,
   dialog: dialogReduser,
   counter: counterReducer,

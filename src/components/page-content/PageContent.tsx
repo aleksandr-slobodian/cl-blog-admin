@@ -16,7 +16,7 @@ export const PageContent: React.FC<PageContentProps> = ({
   maxWidth,
   isCentered,
   isTop = true,
-  isFullHeight = true,
+  isFullHeight = false,
   disableGutters = false,
   sx,
 }) => {

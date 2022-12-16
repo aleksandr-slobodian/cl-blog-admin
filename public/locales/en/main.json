@@ -1,5 +1,10 @@
 {
   "title": "Welcome!",
+  "page": {
+    "login": {
+      "h1": "Login"
+    }
+  },
   "form": {
     "validation": {
       "required": "Field is required",
@@ -8,6 +13,7 @@
       "max": "Field should be of maximum {max} characters length"
     },
     "button": {
+      "submit": "Submit",
       "create": "Create",
       "update": "Update"
     },
@@ -19,12 +25,14 @@
     "error": {
       "create": "Failed to create.",
       "update": "Failed to update.",
-      "delete": "Failed to delete."
+      "delete": "Failed to delete.",
+      "login": "Failed to login."
     },
     "success": {
       "create": "Create successfully.",
       "update": "Updated successfully.",
-      "delete": "Deleted successfully."
+      "delete": "Deleted successfully.",
+      "login": "Welcome, {name}."
     }
   },
   "dialog": {

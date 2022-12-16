@@ -4,6 +4,7 @@ import {
   API_PATH_USERS,
   API_PATH_USER,
   APP_ITEMS_PER_PAGE,
+  API_PATH_LOGIN,
 } from "../config";
 import { User } from "../types/api";
 import { prepareEndpointPath } from "../utils/prepareEndpointPath";
@@ -12,7 +13,16 @@ export const usersApi = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: API_BASE_URL }),
   tagTypes: ["Users"],
   endpoints: (builder) => ({
-    addPost: builder.mutation<User, Partial<User>>({
+    loginUser: builder.mutation<User, { email: string; password: string }>({
+      query(body) {
+        return {
+          url: API_PATH_LOGIN,
+          method: "POST",
+          body,
+        };
+      },
+    }),
+    addUser: builder.mutation<User, Partial<User>>({
       query(body) {
         return {
           url: API_PATH_USERS,
@@ -63,9 +73,10 @@ export const usersApi = createApi({
 });
 
 export const {
+  useLoginUserMutation,
   useListUsersQuery,
   useGetUserQuery,
   useDeleteUserMutation,
-  useAddPostMutation,
+  useAddUserMutation,
   useUpdateUserMutation,
 } = usersApi;

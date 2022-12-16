@@ -4,7 +4,6 @@ import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 import { useRoutes } from "react-router-dom";
-import styles from "./App.module.scss";
 import routes from "./routes";
 import { ThemeProvider } from "@mui/material/styles";
 import { useTheme } from "./hooks";
@@ -18,7 +17,7 @@ function App() {
     <SnackBarProvider>
       <ThemeProvider theme={theme}>
         <CssBaseline enableColorScheme={true} />
-        <div className={styles?.App}>{element}</div>
+        {element}
       </ThemeProvider>
     </SnackBarProvider>
   );

@@ -4,9 +4,10 @@ import PageLoadingIndicator from "./components/page-loading-indicator/PageLoadin
 import { Layout } from "./layouts/default";
 import { PageDefault } from "./pages/default";
 import { PageHome } from "./pages/home";
+import { PageLogin } from "./pages/login";
 
-// import GuestOnly from "./components/guest-only/GuestOnly";
-// import RequireAuth from "./components/require-auth/RequireAuth";
+import GuestOnly from "./components/guest-only/GuestOnly";
+import RequireAuth from "./components/require-auth/RequireAuth";
 
 const PageCategories = React.lazy(
   () => import("./pages/categories/PageCategories")
@@ -24,12 +25,21 @@ export const routes: RouteObject[] = [
     path: "/",
     element: <Layout />,
     children: [
-      { index: true, element: <PageHome /> },
+      {
+        index: true,
+        element: (
+          <RequireAuth>
+            <PageHome />
+          </RequireAuth>
+        ),
+      },
       {
         path: "/categories",
         element: (
           <Suspense fallback={<PageLoadingIndicator />}>
-            <PageCategories />
+            <RequireAuth>
+              <PageCategories />
+            </RequireAuth>
           </Suspense>
         ),
       },
@@ -41,7 +51,9 @@ export const routes: RouteObject[] = [
             index: true,
             element: (
               <Suspense fallback={<PageLoadingIndicator />}>
-                <PageUsers />
+                <RequireAuth>
+                  <PageUsers />
+                </RequireAuth>
               </Suspense>
             ),
           },
@@ -49,7 +61,9 @@ export const routes: RouteObject[] = [
             path: "add",
             element: (
               <Suspense fallback={<PageLoadingIndicator />}>
-                <PageUserCreate />
+                <RequireAuth>
+                  <PageUserCreate />
+                </RequireAuth>
               </Suspense>
             ),
           },
@@ -57,13 +71,22 @@ export const routes: RouteObject[] = [
             path: ":id",
             element: (
               <Suspense fallback={<PageLoadingIndicator />}>
-                <PageUserUpdate />
+                <RequireAuth>
+                  <PageUserUpdate />
+                </RequireAuth>
               </Suspense>
             ),
           },
         ],
       },
-
+      {
+        path: "/login",
+        element: (
+          <GuestOnly>
+            <PageLogin />
+          </GuestOnly>
+        ),
+      },
       { path: "*", element: <PageDefault /> },
     ],
   },

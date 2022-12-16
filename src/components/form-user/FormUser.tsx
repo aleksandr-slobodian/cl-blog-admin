@@ -10,7 +10,7 @@ import { useTranslation } from "react-i18next";
 import { v4 as uuid } from "uuid";
 import { useSnackbar } from "notistack";
 import {
-  useAddPostMutation,
+  useAddUserMutation,
   useUpdateUserMutation,
 } from "../../services/users";
 interface FormUserProps {
@@ -20,7 +20,7 @@ interface FormUserProps {
 export const FormUser: React.FC<FormUserProps> = ({ values }) => {
   const { t } = useTranslation("main", { keyPrefix: "form" });
 
-  const [addUser] = useAddPostMutation();
+  const [addUser] = useAddUserMutation();
   const [updatUser] = useUpdateUserMutation();
 
   const { enqueueSnackbar } = useSnackbar();
