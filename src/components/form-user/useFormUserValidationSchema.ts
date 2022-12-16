@@ -18,6 +18,14 @@ export const useFormUserValidationSchema = () => {
           .min(FORM_V_NAME_MIN, t<string>("min", { min: FORM_V_NAME_MIN }))
           .max(FORM_V_NAME_MAX, t<string>("max", { max: FORM_V_NAME_MAX }))
           .required(t<string>("required")),
+        email: yup
+          .string()
+          .email(t<string>("email"))
+          .required(t<string>("required")),
+        password: yup
+          .string()
+          .min(8, t<string>("min", { min: 8 }))
+          .required(t<string>("required")),
       }),
     [t]
   );

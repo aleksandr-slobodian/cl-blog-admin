@@ -9,6 +9,8 @@ export const PageUserCreate = () => {
     () => ({
       id: "",
       name: "",
+      email: "",
+      password: "",
     }),
     []
   );

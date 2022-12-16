@@ -50,11 +50,20 @@ export const FormUser: React.FC<FormUserProps> = ({ values }) => {
   });
 
   const nameFieldProps = useFormFormikTextFieldProps(formik, "name");
+  const emailFieldProps = useFormFormikTextFieldProps(formik, "email");
+  const passwordFiledProps = useFormFormikTextFieldProps(formik, "password");
 
   return (
     <form onSubmit={formik.handleSubmit}>
       <Stack gap={3} maxWidth={400}>
-        <TextField fullWidth label={t("label.full-name")} {...nameFieldProps} />
+        <TextField label={t("label.full-name")} {...nameFieldProps} />
+        <TextField label={t("label.email")} {...emailFieldProps} />
+        <TextField
+          label={t("label.password")}
+          {...passwordFiledProps}
+          type="password"
+        />
+
         <div>
           <LoadingButton
             disabled={!formik.dirty}

@@ -3,6 +3,7 @@
   "form": {
     "validation": {
       "required": "Field is required",
+      "email": "Enter a valid email",
       "min": "Field should be of minimum {min} characters length",
       "max": "Field should be of maximum {max} characters length"
     },
@@ -11,7 +12,9 @@
       "update": "Update"
     },
     "label": {
-      "full-name": "Full name"
+      "full-name": "Full name",
+      "email": "Email",
+      "password": "Password"
     },
     "error": {
       "create": "Failed to create.",
