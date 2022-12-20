@@ -5,10 +5,12 @@ import SettingsBrightnessIcon from "@mui/icons-material/SettingsBrightness";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
 import { useAppDispatch, useAppSelector } from "../../hooks";
 import { selectDarkMode, setMode } from "../../state/theme/themeSlice";
+import { useTranslation } from "react-i18next";
 
 export const DarkModeSwitcher = () => {
   const dispatch = useAppDispatch();
   const darkMode = useAppSelector(selectDarkMode);
+  const { t } = useTranslation("main", { keyPrefix: "theme" });
 
   return (
     <ButtonGroup size="small">
@@ -17,21 +19,21 @@ export const DarkModeSwitcher = () => {
         onClick={() => dispatch(setMode(false))}
         startIcon={<LightModeIcon />}
       >
-        {"light"}
+        {t("light")}
       </Button>
       <Button
         variant={darkMode === undefined ? "contained" : "outlined"}
         onClick={() => dispatch(setMode(undefined))}
         startIcon={<SettingsBrightnessIcon />}
       >
-        {"auto"}
+        {t("auto")}
       </Button>
       <Button
         variant={darkMode === true ? "contained" : "outlined"}
         onClick={() => dispatch(setMode(true))}
         startIcon={<DarkModeIcon />}
       >
-        {"dark"}
+        {t("dark")}
       </Button>
     </ButtonGroup>
   );

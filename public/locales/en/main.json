@@ -1,5 +1,16 @@
 {
   "title": "Welcome!",
+  "main-menu": {
+    "home": "Home",
+    "categories": "Categories",
+    "users": "Users",
+    "logout": "Logout"
+  },
+  "theme": {
+    "light": "Light",
+    "auto": "Auto",
+    "dark": "Dark"
+  },
   "page": {
     "login": {
       "h1": "Login"

@@ -1,5 +1,6 @@
 import Link from "@mui/material/Link";
 import ListItem from "@mui/material/ListItem";
+import { useTranslation } from "react-i18next";
 import {
   APP_PATH_CATEGORIES,
   APP_PATH_HOME,
@@ -13,11 +14,13 @@ import { toggleMainDrawer } from "../../state/main-drawer";
 export const MainMenu = () => {
   const { user } = useAppSelector(selectAuth);
   const dispatch = useAppDispatch();
+  const { t } = useTranslation("main", { keyPrefix: "main-menu" });
+
   return (
     <div>
       <ListItem>
         <Link onClick={() => dispatch(toggleMainDrawer())} href={APP_PATH_HOME}>
-          Home
+          {t("home")}
         </Link>
       </ListItem>
       {user ? (
@@ -27,7 +30,7 @@ export const MainMenu = () => {
               onClick={() => dispatch(toggleMainDrawer())}
               href={APP_PATH_CATEGORIES}
             >
-              Categories
+              {t("categories")}
             </Link>
           </ListItem>
           <ListItem>
@@ -35,7 +38,7 @@ export const MainMenu = () => {
               onClick={() => dispatch(toggleMainDrawer())}
               href={APP_PATH_USERS}
             >
-              Users
+              {t("users")}
             </Link>
           </ListItem>
           <ListItem>
@@ -45,7 +48,7 @@ export const MainMenu = () => {
                 dispatch(logout());
               }}
             >
-              Logout
+              {t("logout")}
             </Link>
           </ListItem>
         </>
