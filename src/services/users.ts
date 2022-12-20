@@ -1,6 +1,4 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import {
-  API_BASE_URL,
   API_PATH_USERS,
   API_PATH_USER,
   APP_ITEMS_PER_PAGE,
@@ -8,10 +6,9 @@ import {
 } from "../config";
 import { User } from "../types/api";
 import { prepareEndpointPath } from "../utils/prepareEndpointPath";
+import { appApi } from "./api";
 
-export const usersApi = createApi({
-  baseQuery: fetchBaseQuery({ baseUrl: API_BASE_URL }),
-  tagTypes: ["Users"],
+export const usersApi = appApi.injectEndpoints({
   endpoints: (builder) => ({
     loginUser: builder.mutation<User, { email: string; password: string }>({
       query(body) {

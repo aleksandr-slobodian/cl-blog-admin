@@ -2,12 +2,12 @@ import { configureStore, combineReducers } from "@reduxjs/toolkit";
 import { persistReducer, persistStore } from "redux-persist";
 import { setupListeners } from "@reduxjs/toolkit/query";
 import storage from "redux-persist/lib/storage";
-import { usersApi } from "./services/users";
 import counterReducer from "./state/counter/counterSlice";
 import dialogReduser from "./state/dialog/dialogSlice";
 import themeReducer from "./state/theme/themeSlice";
 import authReducer from "./state/auth/authSlice";
 import mainDrawerReducer from "./state/main-drawer/mainDrawerSlice";
+import { appApi } from "./services/api";
 
 const rootPersistConfig = {
   key: "root",
@@ -22,7 +22,7 @@ const reducers = combineReducers({
   counter: counterReducer,
   theme: themeReducer,
 
-  [usersApi.reducerPath]: usersApi.reducer,
+  [appApi.reducerPath]: appApi.reducer,
 });
 
 const _persistedReducer = persistReducer(rootPersistConfig, reducers);
@@ -31,7 +31,7 @@ export const store = configureStore({
   reducer: _persistedReducer,
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({ serializableCheck: false }).concat(
-      usersApi.middleware
+      appApi.middleware
     ),
 });
 
