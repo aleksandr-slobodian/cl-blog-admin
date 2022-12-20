@@ -17,6 +17,12 @@
     },
     "categories": {
       "h1": "Categories"
+    },
+    "category-create": {
+      "h1": "Create new category"
+    },
+    "category-update": {
+      "h1": "Update category"
     }
   },
   "form": {
@@ -24,7 +30,8 @@
       "required": "Field is required",
       "email": "Enter a valid email",
       "min": "Field should be of minimum {min} characters length",
-      "max": "Field should be of maximum {max} characters length"
+      "max": "Field should be of maximum {max} characters length",
+      "alias": "Use only a-z0-9_- symbols"
     },
     "button": {
       "submit": "Submit",
@@ -34,7 +41,10 @@
     "label": {
       "full-name": "Full name",
       "email": "Email",
-      "password": "Password"
+      "password": "Password",
+      "title": "Title",
+      "alias": "Alias",
+      "published": "Published"
     },
     "error": {
       "create": "Failed to create.",

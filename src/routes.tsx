@@ -12,6 +12,12 @@ import RequireAuth from "./components/require-auth/RequireAuth";
 const PageCategories = React.lazy(
   () => import("./pages/categories/PageCategories")
 );
+const PageCategoryCreate = React.lazy(
+  () => import("./pages/category-create/PageCategoryCreate")
+);
+const PageCategoryUpdate = React.lazy(
+  () => import("./pages/category-update/PageCategoryUpdate")
+);
 const PageUsers = React.lazy(() => import("./pages/users/PageUsers"));
 const PageUserCreate = React.lazy(
   () => import("./pages/user-create/PageUserCreate")
@@ -35,13 +41,39 @@ export const routes: RouteObject[] = [
       },
       {
         path: "/categories",
-        element: (
-          <Suspense fallback={<PageLoadingIndicator />}>
-            <RequireAuth>
-              <PageCategories />
-            </RequireAuth>
-          </Suspense>
-        ),
+        element: <Outlet />,
+        children: [
+          {
+            index: true,
+            element: (
+              <Suspense fallback={<PageLoadingIndicator />}>
+                <RequireAuth>
+                  <PageCategories />
+                </RequireAuth>
+              </Suspense>
+            ),
+          },
+          {
+            path: "add",
+            element: (
+              <Suspense fallback={<PageLoadingIndicator />}>
+                <RequireAuth>
+                  <PageCategoryCreate />
+                </RequireAuth>
+              </Suspense>
+            ),
+          },
+          {
+            path: ":id",
+            element: (
+              <Suspense fallback={<PageLoadingIndicator />}>
+                <RequireAuth>
+                  <PageCategoryUpdate />
+                </RequireAuth>
+              </Suspense>
+            ),
+          },
+        ],
       },
       {
         path: "/users",
