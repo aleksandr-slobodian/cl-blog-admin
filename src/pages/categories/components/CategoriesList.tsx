@@ -8,6 +8,7 @@ import { Category } from "../../../types/api";
 import { CategoryListItem } from "./CategoryListItem";
 import { useSnackbar } from "notistack";
 import { useDeleteCategoryMutation } from "../../../services/categories";
+import { Virtuoso } from "react-virtuoso";
 
 interface CategoriesListProps {
   data?: Category[];
@@ -47,21 +48,26 @@ export const CategoriesList: React.FC<CategoriesListProps> = ({ data }) => {
   return (
     <div>
       <Divider />
-      {data?.map((category) => (
-        <CategoryListItem
-          key={`catlst-${category.id}`}
-          category={category}
-          isDeleting={isDeleting}
-          deleteAction={(id, title) => {
-            dispatch(
-              openDialog({
-                text: t<string>("text.delete", { item: title }),
-                id,
-              })
-            );
-          }}
-        />
-      ))}
+      <Virtuoso
+        useWindowScroll
+        data={data}
+        style={{ flexGrow: 1 }}
+        itemContent={(index, category) => (
+          <CategoryListItem
+            key={`catlst-${category.id}`}
+            category={category}
+            isDeleting={isDeleting}
+            deleteAction={(id, title) => {
+              dispatch(
+                openDialog({
+                  text: t<string>("text.delete", { item: title }),
+                  id,
+                })
+              );
+            }}
+          />
+        )}
+      />
       <DialogConfirm
         open={isOpen}
         onClose={handleClose}
