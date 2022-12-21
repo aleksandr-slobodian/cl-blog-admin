@@ -18,6 +18,15 @@ const PageCategoryCreate = React.lazy(
 const PageCategoryUpdate = React.lazy(
   () => import("./pages/category-update/PageCategoryUpdate")
 );
+
+const PagePosts = React.lazy(() => import("./pages/posts/PagePosts"));
+const PagePostCreate = React.lazy(
+  () => import("./pages/post-create/PagePostCreate")
+);
+const PagePostUpdate = React.lazy(
+  () => import("./pages/post-update/PagePostUpdate")
+);
+
 const PageUsers = React.lazy(() => import("./pages/users/PageUsers"));
 const PageUserCreate = React.lazy(
   () => import("./pages/user-create/PageUserCreate")
@@ -69,6 +78,42 @@ export const routes: RouteObject[] = [
               <Suspense fallback={<PageLoadingIndicator />}>
                 <RequireAuth>
                   <PageCategoryUpdate />
+                </RequireAuth>
+              </Suspense>
+            ),
+          },
+        ],
+      },
+      {
+        path: "/posts",
+        element: <Outlet />,
+        children: [
+          {
+            index: true,
+            element: (
+              <Suspense fallback={<PageLoadingIndicator />}>
+                <RequireAuth>
+                  <PagePosts />
+                </RequireAuth>
+              </Suspense>
+            ),
+          },
+          {
+            path: "add",
+            element: (
+              <Suspense fallback={<PageLoadingIndicator />}>
+                <RequireAuth>
+                  <PagePostCreate />
+                </RequireAuth>
+              </Suspense>
+            ),
+          },
+          {
+            path: ":id",
+            element: (
+              <Suspense fallback={<PageLoadingIndicator />}>
+                <RequireAuth>
+                  <PagePostUpdate />
                 </RequireAuth>
               </Suspense>
             ),

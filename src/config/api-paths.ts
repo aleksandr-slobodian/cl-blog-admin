@@ -6,3 +6,6 @@ export const API_PATH_USER = "/users/{id}";
 
 export const API_PATH_CATEGORIES = "/categories";
 export const API_PATH_CATEGORY = "/categories/{id}";
+
+export const API_PATH_POSTS = "/posts";
+export const API_PATH_POST = "/posts/{id}";

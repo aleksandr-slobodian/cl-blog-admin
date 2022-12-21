@@ -5,6 +5,7 @@ import {
   APP_PATH_CATEGORIES,
   APP_PATH_HOME,
   APP_PATH_LOGIN,
+  APP_PATH_POSTS,
   APP_PATH_USERS,
 } from "../../config";
 import { useAppDispatch, useAppSelector } from "../../hooks";
@@ -31,6 +32,14 @@ export const MainMenu = () => {
               href={APP_PATH_CATEGORIES}
             >
               {t("categories")}
+            </Link>
+          </ListItem>
+          <ListItem>
+            <Link
+              onClick={() => dispatch(toggleMainDrawer())}
+              href={APP_PATH_POSTS}
+            >
+              {t("posts")}
             </Link>
           </ListItem>
           <ListItem>

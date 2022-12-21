@@ -3,6 +3,7 @@
   "main-menu": {
     "home": "Home",
     "categories": "Categories",
+    "posts": "Posts",
     "users": "Users",
     "logout": "Logout"
   },
@@ -23,6 +24,15 @@
     },
     "category-update": {
       "h1": "Update category"
+    },
+    "posts": {
+      "h1": "Posts"
+    },
+    "post-create": {
+      "h1": "Create new post"
+    },
+    "post-update": {
+      "h1": "Update post"
     }
   },
   "form": {
