@@ -1,5 +1,6 @@
 import Avatar from "@mui/material/Avatar";
 import blue from "@mui/material/colors/blue";
+import grey from "@mui/material/colors/grey";
 import IconButton from "@mui/material/IconButton";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
@@ -22,7 +23,7 @@ export const CategoryListItem: React.FC<CategoryListItemProps> = ({
   deleteAction,
   isDeleting,
 }) => {
-  const { title, id } = category;
+  const { title, id, isPublished, alias } = category;
 
   const navigate = useNavigate();
 
@@ -55,12 +56,12 @@ export const CategoryListItem: React.FC<CategoryListItemProps> = ({
         <Avatar
           sx={{
             mr: 1,
-            bgcolor: blue[500],
+            bgcolor: isPublished ? blue[500] : grey[300],
           }}
         >
           {title[0]}
         </Avatar>
-        <ListItemText primary={title} />
+        <ListItemText primary={title} secondary={`/${alias}`} />
       </ListItemButton>
     </ListItem>
   );

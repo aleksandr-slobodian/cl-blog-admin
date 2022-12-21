@@ -19,8 +19,9 @@ export const categoriesApi = appApi.injectEndpoints({
       query: (id) => prepareEndpointPath(API_PATH_CATEGORY, { id }),
       providesTags: (result, error, id) => [{ type: "Categories", id }],
     }),
-    listCategories: builder.query<Category[], void>({
-      query: () => `${API_PATH_CATEGORIES}?_limit=1000&_sort=title&_order=asc`,
+    listCategories: builder.query<Category[], number | void>({
+      query: (limit = 1000) =>
+        `${API_PATH_CATEGORIES}?_limit=${limit}&_sort=isPublished,title&_order=desc,asc`,
       providesTags: (result) =>
         result
           ? [
