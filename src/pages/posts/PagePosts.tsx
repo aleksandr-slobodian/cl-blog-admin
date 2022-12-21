@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useMemo } from "react";
 import PageContent from "../../components/page-content/PageContent";
 import PageLoadingIndicator from "../../components/page-loading-indicator/PageLoadingIndicator";
 import { PageDefault } from "../default";
@@ -6,10 +6,16 @@ import ToolbarTop from "./components/ToolbarTop";
 import { PostsList } from "./components/PostsList";
 import { useListPostsQuery } from "../../services/posts";
 import { Pager } from "../../components/pager/Pager";
+import { useSearchParams } from "react-router-dom";
 
 export const PagePosts: React.FC = () => {
-  const [page, setPage] = useState(1);
-  const { data, error, isLoading, isFetching } = useListPostsQuery();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const page = useMemo(() => {
+    const cp = searchParams.get("page");
+    return cp ? parseInt(cp) : 1;
+  }, [searchParams]);
+
+  const { data, error, isLoading, isFetching } = useListPostsQuery(page);
 
   if (error) {
     return <PageDefault />;
@@ -32,7 +38,7 @@ export const PagePosts: React.FC = () => {
           count={data?.length}
           page={page}
           isFetching={isFetching}
-          setPage={(page) => setPage(page)}
+          setPage={(page) => setSearchParams({ page: page.toString() })}
         />
       </PageContent>
     </>
