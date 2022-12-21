@@ -2,7 +2,6 @@ import { configureStore, combineReducers } from "@reduxjs/toolkit";
 import { persistReducer, persistStore } from "redux-persist";
 import { setupListeners } from "@reduxjs/toolkit/query";
 import storage from "redux-persist/lib/storage";
-import counterReducer from "./state/counter/counterSlice";
 import dialogReduser from "./state/dialog/dialogSlice";
 import themeReducer from "./state/theme/themeSlice";
 import authReducer from "./state/auth/authSlice";
@@ -19,7 +18,6 @@ const reducers = combineReducers({
   auth: authReducer,
   mainDrawer: mainDrawerReducer,
   dialog: dialogReduser,
-  counter: counterReducer,
   theme: themeReducer,
 
   [appApi.reducerPath]: appApi.reducer,

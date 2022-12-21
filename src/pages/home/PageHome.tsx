@@ -1,58 +1,45 @@
-import React, { useState } from "react";
-import { useAppDispatch, useAppSelector } from "../../hooks";
-import {
-  decrement,
-  increment,
-  incrementByAmount,
-  incrementByAmountAsync,
-  selectCount,
-} from "../../state/counter";
-import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
+import React from "react";
 import PageContent from "../../components/page-content/PageContent";
 import Typography from "@mui/material/Typography";
+import PostsList from "../posts/components/PostsList";
+import { useListPostsQuery } from "../../services/posts";
+import { PageDefault } from "../default";
+import PageLoadingIndicator from "../../components/page-loading-indicator/PageLoadingIndicator";
+import { useTranslation } from "react-i18next";
+import { Button } from "@mui/material";
+import { useNavigate } from "react-router-dom";
+import { APP_PATH_POSTS } from "../../config";
 
 export const PageHome: React.FC = () => {
-  const count = useAppSelector(selectCount);
-  const dispatch = useAppDispatch();
-  const [incrementAmount, setIncrementAmount] = useState<number>(2);
+  const { data, error, isLoading } = useListPostsQuery();
+  const { t } = useTranslation("main", { keyPrefix: "page.home" });
+  const navigate = useNavigate();
+  if (error) {
+    return <PageDefault />;
+  }
+
+  if (isLoading) {
+    return <PageLoadingIndicator />;
+  }
+
   return (
-    <PageContent>
-      <Typography variant="h1">Homapage</Typography>
-      <div>{count}</div>
-      <div>
-        <Button variant="outlined" onClick={() => dispatch(decrement())}>
-          -
+    <>
+      <PageContent>
+        <Typography variant="h1">{t("h1")}</Typography>
+      </PageContent>
+      <PageContent disableGutters={true} isTop={false} sx={{ mt: 2 }}>
+        <PostsList data={data} />
+      </PageContent>
+      <PageContent disableGutters={true} isTop={false} sx={{ mt: 3 }}>
+        <Button
+          sx={{ alignSelf: "center" }}
+          variant="outlined"
+          onClick={() => navigate(APP_PATH_POSTS)}
+        >
+          {t("button.more-posts")}
         </Button>
-        <Button variant="outlined" onClick={() => dispatch(increment())}>
-          +
-        </Button>
-      </div>
-      <div>
-        <div>
-          <TextField
-            variant="outlined"
-            type="text"
-            value={incrementAmount}
-            onChange={(event) =>
-              setIncrementAmount(parseInt(event.target.value))
-            }
-          />
-          <Button
-            variant="outlined"
-            onClick={() => dispatch(incrementByAmount(incrementAmount))}
-          >
-            +++
-          </Button>
-          <Button
-            variant="outlined"
-            onClick={() => dispatch(incrementByAmountAsync(incrementAmount))}
-          >
-            delay +++
-          </Button>
-        </div>
-      </div>
-    </PageContent>
+      </PageContent>
+    </>
   );
 };
 
