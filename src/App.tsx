@@ -9,16 +9,26 @@ import { ThemeProvider } from "@mui/material/styles";
 import { useTheme } from "./hooks";
 import CssBaseline from "@mui/material/CssBaseline";
 import SnackBarProvider from "./components/snack-bar-provider/SnackBarProvider";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { useTranslation } from "react-i18next";
+import "dayjs/locale/uk";
 
 function App() {
   const element = useRoutes(routes);
   const theme = useTheme();
+  const { i18n } = useTranslation();
   return (
     <SnackBarProvider>
-      <ThemeProvider theme={theme}>
-        <CssBaseline enableColorScheme={true} />
-        {element}
-      </ThemeProvider>
+      <LocalizationProvider
+        dateAdapter={AdapterDayjs}
+        adapterLocale={i18n.languages[0]}
+      >
+        <ThemeProvider theme={theme}>
+          <CssBaseline enableColorScheme={true} />
+          {element}
+        </ThemeProvider>
+      </LocalizationProvider>
     </SnackBarProvider>
   );
 }

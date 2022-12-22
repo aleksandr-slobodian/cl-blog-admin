@@ -30,6 +30,11 @@ export const useFormPostValidationSchema = () => {
             t<string>("alias")
           )
           .required(t<string>("required")),
+        datePublished: yup
+          .date()
+          .typeError(t<string>("date-time"))
+          .required(t<string>("required"))
+          .nullable(),
       }),
     [t]
   );

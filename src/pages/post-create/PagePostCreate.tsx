@@ -1,3 +1,4 @@
+import dayjs from "dayjs";
 import { useMemo } from "react";
 import FormPost from "../../components/form-post/FormPost";
 import PageContent from "../../components/page-content/PageContent";
@@ -10,6 +11,7 @@ export const PagePostCreate = () => {
       id: "",
       title: "",
       alias: "",
+      datePublished: dayjs(),
       isPublished: true,
     }),
     []

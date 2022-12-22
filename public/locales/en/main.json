@@ -47,7 +47,8 @@
       "email": "Enter a valid email",
       "min": "Field should be of minimum {min} characters length",
       "max": "Field should be of maximum {max} characters length",
-      "alias": "Use only a-z0-9_- symbols"
+      "alias": "Use only a-z0-9_- symbols",
+      "date-time": "Date must be in `mm/dd/yyyy hh:mm (A|P)M` format"
     },
     "button": {
       "submit": "Submit",
@@ -60,7 +61,8 @@
       "password": "Password",
       "title": "Title",
       "alias": "Alias",
-      "published": "Published"
+      "published": "Published",
+      "date-published": "Date published"
     },
     "error": {
       "create": "Failed to create.",

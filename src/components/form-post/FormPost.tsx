@@ -15,6 +15,8 @@ import {
 } from "../../services/posts";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
+import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
+import prepareSubmittedData from "../../utils/prepareSubmittedData";
 
 interface FormPostProps {
   values: Post;
@@ -32,12 +34,16 @@ export const FormPost: React.FC<FormPostProps> = ({ values }) => {
     initialValues: values,
     validationSchema: useFormPostValidationSchema(),
     onSubmit: async (newValues, { setSubmitting, resetForm }) => {
+      const preparedValues = prepareSubmittedData(newValues, {
+        date: ["datePublished"],
+      });
+
       try {
         if (values.id) {
-          await updatePost(newValues).unwrap();
+          await updatePost(preparedValues).unwrap();
         } else {
           const id = uuid();
-          await addPost({ ...newValues, id }).unwrap();
+          await addPost({ ...preparedValues, id }).unwrap();
           resetForm();
         }
         enqueueSnackbar(t(!values.id ? "success.create" : "success.update"), {
@@ -54,12 +60,27 @@ export const FormPost: React.FC<FormPostProps> = ({ values }) => {
 
   const titleFieldProps = useFormFormikTextFieldProps(formik, "title");
   const aliasFieldProps = useFormFormikTextFieldProps(formik, "alias");
+  const datePublishedFieldProps = useFormFormikTextFieldProps(
+    formik,
+    "datePublished",
+    { onChange: undefined }
+  );
 
   return (
     <form onSubmit={formik.handleSubmit}>
       <Stack gap={3} maxWidth={400}>
         <TextField label={t("label.title")} {...titleFieldProps} />
         <TextField label={t("label.alias")} {...aliasFieldProps} />
+        <DateTimePicker
+          label={t("label.date-published")}
+          renderInput={(params) => (
+            <TextField fullWidth {...params} {...datePublishedFieldProps} />
+          )}
+          value={formik.values.datePublished || ""}
+          onChange={(value) =>
+            formik.setFieldValue("datePublished", value, true)
+          }
+        />
         <FormControlLabel
           control={
             <Checkbox
