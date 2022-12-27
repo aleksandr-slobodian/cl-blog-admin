@@ -10,6 +10,8 @@ export const PagePostCreate = () => {
     () => ({
       id: "",
       title: "",
+      subtitle: "",
+      body: "",
       alias: "",
       datePublished: dayjs(),
       isPublished: true,

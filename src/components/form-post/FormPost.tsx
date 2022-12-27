@@ -22,6 +22,9 @@ interface FormPostProps {
   values: Post;
 }
 
+const FORM_FIELDS_MAX_WIDTH = 400;
+const FORM_TEXTAREA_MAX_WIDTH = 800;
+
 export const FormPost: React.FC<FormPostProps> = ({ values }) => {
   const { t } = useTranslation("main", { keyPrefix: "form" });
 
@@ -60,6 +63,8 @@ export const FormPost: React.FC<FormPostProps> = ({ values }) => {
 
   const titleFieldProps = useFormFormikTextFieldProps(formik, "title");
   const aliasFieldProps = useFormFormikTextFieldProps(formik, "alias");
+  const subtitleFieldProps = useFormFormikTextFieldProps(formik, "subtitle");
+  const bodyFieldProps = useFormFormikTextFieldProps(formik, "body");
   const datePublishedFieldProps = useFormFormikTextFieldProps(
     formik,
     "datePublished",
@@ -68,29 +73,50 @@ export const FormPost: React.FC<FormPostProps> = ({ values }) => {
 
   return (
     <form onSubmit={formik.handleSubmit}>
-      <Stack gap={3} maxWidth={400}>
-        <TextField label={t("label.title")} {...titleFieldProps} />
-        <TextField label={t("label.alias")} {...aliasFieldProps} />
-        <DateTimePicker
-          label={t("label.date-published")}
-          renderInput={(params) => (
-            <TextField fullWidth {...params} {...datePublishedFieldProps} />
-          )}
-          value={formik.values.datePublished || ""}
-          onChange={(value) =>
-            formik.setFieldValue("datePublished", value, true)
-          }
+      <Stack gap={3}>
+        <TextField
+          label={t("label.title")}
+          {...titleFieldProps}
+          sx={{ maxWidth: FORM_FIELDS_MAX_WIDTH }}
         />
-        <FormControlLabel
-          control={
-            <Checkbox
-              name="isPublished"
-              checked={formik.values.isPublished}
-              onChange={formik.handleChange}
-            />
-          }
-          label={t("label.published")}
-        />
+        <Stack maxWidth={FORM_TEXTAREA_MAX_WIDTH} gap={3}>
+          <TextField
+            label={t("label.subtitle")}
+            {...subtitleFieldProps}
+            multiline
+            rows={4}
+          />
+          <TextField
+            label={t("label.body-text")}
+            {...bodyFieldProps}
+            multiline
+            minRows={10}
+            maxRows={20}
+          />
+        </Stack>
+        <Stack maxWidth={FORM_FIELDS_MAX_WIDTH} gap={3}>
+          <TextField label={t("label.alias")} {...aliasFieldProps} />
+          <DateTimePicker
+            label={t("label.date-published")}
+            renderInput={(params) => (
+              <TextField fullWidth {...params} {...datePublishedFieldProps} />
+            )}
+            value={formik.values.datePublished || ""}
+            onChange={(value) =>
+              formik.setFieldValue("datePublished", value, true)
+            }
+          />
+          <FormControlLabel
+            control={
+              <Checkbox
+                name="isPublished"
+                checked={formik.values.isPublished}
+                onChange={formik.handleChange}
+              />
+            }
+            label={t("label.published")}
+          />
+        </Stack>
         <div>
           <LoadingButton
             disabled={!formik.dirty}

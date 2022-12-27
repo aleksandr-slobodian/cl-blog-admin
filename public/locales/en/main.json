@@ -60,6 +60,8 @@
       "email": "Email",
       "password": "Password",
       "title": "Title",
+      "subtitle": "Subtitle",
+      "body-text": "Body text",
       "alias": "Alias",
       "published": "Published",
       "date-published": "Date published"
