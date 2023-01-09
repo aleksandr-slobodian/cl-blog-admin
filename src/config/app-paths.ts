@@ -8,4 +8,5 @@ export const APP_PATH_CATEGORY_CREATE = "/categories/add";
 export const APP_PATH_POST_CREATE = "/posts/add";
 export const APP_PATH_POSTS = "/posts";
 export const APP_PATH_POST = "/posts/{id}";
+export const APP_PATH_IMAGES = "/images";
 export const APP_PATH_LOGIN = "/login";

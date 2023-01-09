@@ -4,6 +4,7 @@
     "home": "Home",
     "categories": "Categories",
     "posts": "Posts",
+    "images": "Images",
     "users": "Users",
     "logout": "Logout"
   },
@@ -39,6 +40,9 @@
     },
     "post-update": {
       "h1": "Update post"
+    },
+    "images": {
+      "h1": "Images"
     }
   },
   "form": {
@@ -53,7 +57,8 @@
     "button": {
       "submit": "Submit",
       "create": "Create",
-      "update": "Update"
+      "update": "Update",
+      "upload": "Upload"
     },
     "label": {
       "full-name": "Full name",
@@ -64,13 +69,20 @@
       "body-text": "Body text",
       "alias": "Alias",
       "published": "Published",
-      "date-published": "Date published"
+      "date-published": "Date published",
+      "dropzone-drop-or-select": "Drag 'n' drop some files here, or click to select files",
+      "dropzone-drop-here": "Drop the files here ...",
+      "dropzone-caption": "Only *.jpeg and *.png images will be accepted and {number, plural, =1 {one file is} other {# files are}} the maximum number of files you can drop here"
     },
     "error": {
       "create": "Failed to create.",
       "update": "Failed to update.",
       "delete": "Failed to delete.",
-      "login": "Failed to login."
+      "login": "Failed to login.",
+      "max-file-size": "File size is larger than {number} Kb",
+      "max-file-name": "File name is larger than {number} characters",
+      "files-rejected": "{number, plural, =1 {One file has} other {# files have}} been rejected",
+      "max-files-number": "{number, plural, =1 {one file is} other {# files are}} the maximum number of files for selection"
     },
     "success": {
       "create": "Create successfully.",

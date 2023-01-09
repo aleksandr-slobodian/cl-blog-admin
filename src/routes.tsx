@@ -27,6 +27,8 @@ const PagePostUpdate = React.lazy(
   () => import("./pages/post-update/PagePostUpdate")
 );
 
+const PageImages = React.lazy(() => import("./pages/images/PageImages"));
+
 const PageUsers = React.lazy(() => import("./pages/users/PageUsers"));
 const PageUserCreate = React.lazy(
   () => import("./pages/user-create/PageUserCreate")
@@ -119,6 +121,16 @@ export const routes: RouteObject[] = [
             ),
           },
         ],
+      },
+      {
+        path: "/images",
+        element: (
+          <Suspense fallback={<PageLoadingIndicator />}>
+            <RequireAuth>
+              <PageImages />
+            </RequireAuth>
+          </Suspense>
+        ),
       },
       {
         path: "/users",
