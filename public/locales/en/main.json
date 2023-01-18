@@ -58,7 +58,9 @@
       "submit": "Submit",
       "create": "Create",
       "update": "Update",
-      "upload": "Upload"
+      "upload": "Upload",
+      "clear-all": "Clear all",
+      "upload-all": "Upload all"
     },
     "label": {
       "full-name": "Full name",

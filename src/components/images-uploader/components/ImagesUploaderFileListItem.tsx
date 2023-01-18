@@ -8,12 +8,17 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import { UploadImage } from "../../../types/api/images";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import { useAppDispatch } from "../../../hooks";
-import { deleteUploadImage, uploadImage } from "../../../state/upload-images";
+import {
+  deleteUploadImage,
+  uploadImage,
+  startUploadImage,
+} from "../../../state/upload-images";
 import DoneIcon from "@mui/icons-material/Done";
 import FileUploadIcon from "@mui/icons-material/FileUpload";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import CircularProgressWithLabel from "../../circular-progress-with-label/CircularProgressWithLabel";
 import { useTranslation } from "react-i18next";
+import { useUpdateEffect } from "react-use";
 
 export const ImagesUploaderFileListItem: React.FC<UploadImage> = ({
   name,
@@ -35,9 +40,19 @@ export const ImagesUploaderFileListItem: React.FC<UploadImage> = ({
 
   const uploadAbort = useRef<() => void>();
 
+  useUpdateEffect(() => {
+    if (status === "started") {
+      const upload = dispatch(uploadImage(id));
+      uploadAbort.current = upload.abort;
+      return;
+    }
+    if (status === "aborted" && uploadAbort.current) {
+      uploadAbort.current();
+    }
+  }, [status]);
+
   const handleUpload = useCallback(() => {
-    const upload = dispatch(uploadImage(id));
-    uploadAbort.current = upload.abort;
+    dispatch(startUploadImage(id));
   }, [dispatch, id]);
 
   const handleDelete = useCallback(() => {

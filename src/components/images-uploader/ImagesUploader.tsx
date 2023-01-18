@@ -3,6 +3,7 @@ import { useAppDispatch, useAppSelector } from "../../hooks";
 import { addUploadImages, selectUploadImages } from "../../state/upload-images";
 import ImagesUploaderDropzone from "./components/ImagesUploaderDropzone";
 import ImagesUploaderFileList from "./components/ImagesUploaderFileList";
+import ImagesUploaderControls from "./components/ImagesUploaderControls";
 
 export const ImagesUploader: React.FC = () => {
   const { images } = useAppSelector(selectUploadImages);
@@ -21,6 +22,7 @@ export const ImagesUploader: React.FC = () => {
         <ImagesUploaderDropzone onDropFiles={onDropFiles} />
       )}
       <ImagesUploaderFileList images={images} />
+      <ImagesUploaderControls images={images} />
     </>
   );
 };

@@ -10,6 +10,13 @@ interface UploadImagesState {
 
 const initialState: UploadImagesState = { images: [] };
 
+export const asyncAbortUploadingImages = createAsyncThunk(
+  "uploadImages/asyncAbortUploadingImages",
+  async (_, { dispatch }) => {
+    dispatch(abortUploadingImages());
+  }
+);
+
 export const uploadImage = createAsyncThunk(
   "uploadImages/uploadImage",
   async (id: string, { getState, signal, dispatch }) => {
@@ -70,6 +77,21 @@ export const uploadImagesSlice = createSlice({
   name: "uploadImages",
   initialState,
   reducers: {
+    clearUploadImages: (state) => {
+      state.images = [];
+    },
+    abortUploadingImages: (state) => {
+      const uploadingImages = state.images.filter(
+        ({ status }) => status === "started" || status === "uploading"
+      );
+      if (uploadingImages.length) {
+        uploadingImages.map((img) => {
+          img.status = "aborted";
+          return img;
+        });
+        state.images = uploadingImages;
+      }
+    },
     addUploadImages: (state, action: PayloadAction<File[]>) => {
       if (action.payload.length) {
         const images: UploadImage[] = [];
@@ -83,6 +105,12 @@ export const uploadImagesSlice = createSlice({
     },
     deleteUploadImage: (state, action: PayloadAction<string>) => {
       state.images = state.images.filter(({ id }) => id !== action.payload);
+    },
+    startUploadImage: (state, action: PayloadAction<string>) => {
+      const img = state.images.find(({ id }) => id === action.payload);
+      if (img) {
+        img.status = "started";
+      }
     },
     setImageUploadProgress: (
       state,
@@ -108,8 +136,14 @@ export const uploadImagesSlice = createSlice({
   },
 });
 
-export const { addUploadImages, deleteUploadImage, setImageUploadProgress } =
-  uploadImagesSlice.actions;
+export const {
+  addUploadImages,
+  startUploadImage,
+  deleteUploadImage,
+  setImageUploadProgress,
+  clearUploadImages,
+  abortUploadingImages,
+} = uploadImagesSlice.actions;
 
 export const selectUploadImages = (state: RootState) => state.uploadImages;
 
