@@ -1,3 +1,4 @@
+require('dotenv').config();
 const jsonServer = require('json-server')
 const server = jsonServer.create()
 const router = jsonServer.router('db.json')
@@ -7,7 +8,7 @@ const path = require('path');
 var multer  = require('multer');
 
 
-const FILE_UPLOAD_BASE_PATH = 'public/files';
+const FILE_UPLOAD_BASE_PATH = process.env.FILE_UPLOAD_BASE_PATH;
 const API_IMAGES_PATH = '/api/images';
 
 var storage = multer.diskStorage({

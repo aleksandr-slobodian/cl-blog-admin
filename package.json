@@ -19,6 +19,8 @@
     "@types/react": "^18.0.25",
     "@types/react-dom": "^18.0.9",
     "dayjs": "^1.11.7",
+    "dotenv": "^16.0.3",
+    "env-cmd": "^10.1.0",
     "formik": "^2.2.9",
     "i18next": "^22.1.4",
     "i18next-browser-languagedetector": "^7.0.1",
@@ -47,7 +49,7 @@
   },
   "scripts": {
     "serve:dev": "react-scripts start & node server.js",
-    "serve:prod": "serve -s build & node server.js",
+    "serve:prod": "serve -s build & env-cmd -f .env.prod node server.js",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
