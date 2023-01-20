@@ -36,7 +36,7 @@ export const uploadImage = createAsyncThunk(
       });
       await new Promise((resolve, reject) => {
         request.open("POST", API_BASE_URL + API_PATH_IMAGES);
-        request.addEventListener("load", (event) => {
+        request.addEventListener("load", async (event) => {
           if (request.status === 201) {
             resolve(JSON.parse(request.response));
           } else {

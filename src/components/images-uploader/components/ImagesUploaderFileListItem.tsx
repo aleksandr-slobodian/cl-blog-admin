@@ -19,6 +19,7 @@ import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import CircularProgressWithLabel from "../../circular-progress-with-label/CircularProgressWithLabel";
 import { useTranslation } from "react-i18next";
 import { useUpdateEffect } from "react-use";
+import { asyncPatchImages } from "../../../services/images";
 
 export const ImagesUploaderFileListItem: React.FC<UploadImage> = ({
   name,
@@ -43,6 +44,9 @@ export const ImagesUploaderFileListItem: React.FC<UploadImage> = ({
   useUpdateEffect(() => {
     if (status === "started") {
       const upload = dispatch(uploadImage(id));
+      upload.then(({ payload }) => {
+        dispatch(asyncPatchImages(payload));
+      });
       uploadAbort.current = upload.abort;
       return;
     }

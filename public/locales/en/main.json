@@ -42,7 +42,9 @@
       "h1": "Update post"
     },
     "images": {
-      "h1": "Images"
+      "h1": "Images",
+      "tab-1": "Upload",
+      "tab-2": "List"
     }
   },
   "form": {

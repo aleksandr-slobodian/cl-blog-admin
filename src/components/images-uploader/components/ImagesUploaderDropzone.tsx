@@ -21,8 +21,8 @@ interface ImagesUploaderDropzoneProps {
 
 export const ImagesUploaderDropzone: React.FC<ImagesUploaderDropzoneProps> = ({
   maxDropFiles = 10,
-  maxFileSize = 500000,
-  maxFileName = 50,
+  maxFileSize = 1000000,
+  maxFileName = 100,
   onDropFiles,
 }) => {
   const { t } = useTranslation("main", { keyPrefix: "form" });
@@ -92,6 +92,7 @@ export const ImagesUploaderDropzone: React.FC<ImagesUploaderDropzoneProps> = ({
       accept: {
         "image/jpeg": [".jpg", ".jpeg"],
         "image/png": [".png"],
+        "image/webp": [".webp"],
       },
       maxFiles: maxDropFiles,
     }),

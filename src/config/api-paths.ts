@@ -11,3 +11,4 @@ export const API_PATH_POSTS = "/posts";
 export const API_PATH_POST = "/posts/{id}";
 
 export const API_PATH_IMAGES = "/images";
+export const API_PATH_IMAGE = "/images/{id}";
