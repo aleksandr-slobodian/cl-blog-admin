@@ -8,7 +8,7 @@ import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import CardActions from "@mui/material/CardActions";
 import { IMAGES_BASE_PATH } from "../../../config";
-import dayjs from "dayjs";
+import { useDateTime } from "../../../hooks/date-time";
 
 interface ImageListItemProps {
   image: Image;
@@ -24,6 +24,8 @@ export const ImageListItem: React.FC<ImageListItemProps> = ({
   clickAction,
 }) => {
   const { name, id, originalname, date } = image;
+
+  const formatedDate = useDateTime(date, "digits", "datetime");
 
   return (
     <Card
@@ -56,7 +58,7 @@ export const ImageListItem: React.FC<ImageListItemProps> = ({
       </CardContent>
       <CardActions sx={{ justifyContent: "space-between" }}>
         <Typography variant="caption" component="div">
-          {dayjs(date).format("MMM D, YYYY")}
+          {formatedDate}
         </Typography>
         <IconButton
           disabled={isDeleting}
