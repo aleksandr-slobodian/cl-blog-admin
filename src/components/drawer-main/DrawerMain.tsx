@@ -6,19 +6,26 @@ import Divider from "@mui/material/Divider";
 import Box from "@mui/material/Box";
 import MainMenu from "../main-menu/MainMenu";
 import { useAppDispatch, useAppSelector } from "../../hooks";
-import { selectMainDrawer, toggleMainDrawer } from "../../state/main-drawer";
 import DarkModeSwitcher from "../dark-mode-switcher/DarkModeSwitcher";
 import LangSwitcher from "../lang-switcher/LangSwitcher";
 import Stack from "@mui/material/Stack";
+import {
+  selectDrawerById,
+  selectDrawers,
+  toggleDrawer,
+} from "../../state/drawers";
 
 export const DrawerMain = () => {
-  const { isOpen } = useAppSelector(selectMainDrawer);
   const dispatch = useAppDispatch();
+
+  const drawers = useAppSelector(selectDrawers);
+  const { isOpen } = selectDrawerById(drawers, "main-drawer") || {};
+
   return (
     <Drawer
       anchor={"left"}
       open={isOpen}
-      onClose={() => dispatch(toggleMainDrawer())}
+      onClose={() => dispatch(toggleDrawer("main-drawer"))}
     >
       <Toolbar
         variant="dense"
@@ -27,7 +34,7 @@ export const DrawerMain = () => {
         <IconButton
           edge="end"
           color="inherit"
-          onClick={() => dispatch(toggleMainDrawer())}
+          onClick={() => dispatch(toggleDrawer("main-drawer"))}
         >
           <CloseIcon />
         </IconButton>

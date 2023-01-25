@@ -5,7 +5,7 @@ import storage from "redux-persist/lib/storage";
 import dialogReduser from "./state/dialog/dialogSlice";
 import themeReducer from "./state/theme/themeSlice";
 import authReducer from "./state/auth/authSlice";
-import mainDrawerReducer from "./state/main-drawer/mainDrawerSlice";
+import drawersReducer from "./state/drawers/drawersSlice";
 import uploadImagesReducer from "./state/upload-images/uploadImagesSlice";
 import { appApi } from "./services/api";
 
@@ -17,7 +17,7 @@ const rootPersistConfig = {
 
 const reducers = combineReducers({
   auth: authReducer,
-  mainDrawer: mainDrawerReducer,
+  drawers: drawersReducer,
   dialog: dialogReduser,
   theme: themeReducer,
   uploadImages: uploadImagesReducer,
