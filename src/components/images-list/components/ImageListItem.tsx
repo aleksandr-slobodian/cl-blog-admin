@@ -13,7 +13,7 @@ import { useDateTime } from "../../../hooks/date-time";
 interface ImageListItemProps {
   image: Image;
   deleteAction: (id: string, title: string) => void;
-  clickAction?: (id: string) => void;
+  clickAction?: (name: string) => void;
   isDeleting: boolean;
 }
 
@@ -45,7 +45,7 @@ export const ImageListItem: React.FC<ImageListItemProps> = ({
         }}
         image={IMAGES_BASE_PATH + name}
         title={originalname}
-        onClick={() => clickAction && clickAction(id)}
+        onClick={() => clickAction && clickAction(name)}
       />
       <CardContent sx={{ pb: 0 }}>
         <Typography

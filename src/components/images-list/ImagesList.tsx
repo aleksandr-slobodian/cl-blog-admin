@@ -19,7 +19,7 @@ const ListContainer = styled.div`
 `;
 
 interface ImagesListProps {
-  onItemClick?: (id: string) => void;
+  onItemClick?: (name: string) => void;
 }
 
 export const ImagesList: React.FC<ImagesListProps> = ({ onItemClick }) => {
@@ -70,7 +70,7 @@ export const ImagesList: React.FC<ImagesListProps> = ({ onItemClick }) => {
             key={`imglst-${image.id}`}
             image={image}
             isDeleting={isDeleting}
-            clickAction={onItemClick ? (id) => onItemClick(id) : undefined}
+            clickAction={onItemClick ? (name) => onItemClick(name) : undefined}
             deleteAction={(id, title) => {
               dispatch(
                 openDialog({

@@ -54,6 +54,7 @@
       "min": "Field should be of minimum {min} characters length",
       "max": "Field should be of maximum {max} characters length",
       "alias": "Use only a-z0-9_- symbols",
+      "image": "Wrong image name or image type",
       "date-time": "Date must be in `mm/dd/yyyy hh:mm (A|P)M` format"
     },
     "button": {
@@ -65,6 +66,7 @@
       "upload-all": "Upload all"
     },
     "label": {
+      "image": "Image",
       "full-name": "Full name",
       "email": "Email",
       "password": "Password",
@@ -107,6 +109,13 @@
       "text": {
         "delete": "Are you sure you want to delete \"{item}\". This operation cannot be undone."
       }
+    }
+  },
+  "drawer": {
+    "select-image": {
+      "title": "Select image",
+      "tab-1": "List",
+      "tab-2": "Upload"
     }
   }
 }

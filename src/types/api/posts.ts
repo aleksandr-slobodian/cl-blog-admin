@@ -4,6 +4,7 @@ export interface Post {
   title: string;
   subtitle: string;
   body: string;
+  image: string;
   alias: string;
   datePublished: Dayjs;
   isPublished: boolean;

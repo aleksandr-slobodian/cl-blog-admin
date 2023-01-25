@@ -13,6 +13,7 @@ export const PagePostCreate = () => {
       subtitle: "",
       body: "",
       alias: "",
+      image: "",
       datePublished: dayjs(),
       isPublished: true,
     }),

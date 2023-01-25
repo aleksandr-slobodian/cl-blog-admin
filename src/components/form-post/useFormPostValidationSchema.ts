@@ -43,6 +43,13 @@ export const useFormPostValidationSchema = () => {
           .min(FORM_V_BODY_MIN, t<string>("min", { min: FORM_V_BODY_MIN }))
           .max(FORM_V_BODY_MAX, t<string>("max", { max: FORM_V_BODY_MAX }))
           .required(t<string>("required")),
+        image: yup
+          .string()
+          .required(t<string>("required"))
+          .matches(
+            /^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}\b.(jpeg|png|webp)$/,
+            t<string>("image")
+          ),
         alias: yup
           .string()
           .min(FORM_V_ALIAS_MIN, t<string>("min", { min: FORM_V_ALIAS_MIN }))
