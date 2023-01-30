@@ -1,6 +1,6 @@
-import React, { useCallback } from "react";
+import React, { SyntheticEvent, useCallback, useEffect, useState } from "react";
 import { useFormik } from "formik";
-import { Post } from "../../types/api";
+import { Category, Post } from "../../types/api";
 import useFormPostValidationSchema from "./useFormPostValidationSchema";
 import { useAppDispatch, useFormFormikTextFieldProps } from "../../hooks";
 import TextField from "@mui/material/TextField";
@@ -20,6 +20,10 @@ import prepareSubmittedData from "../../utils/prepareSubmittedData";
 import FieldImage from "../field-image/FieldImage";
 import { toggleDrawer } from "../../state/drawers";
 import DrawerImages from "../drawer-images/DrawerImages";
+import { useListCategoriesQuery } from "../../services/categories";
+import Autocomplete from "@mui/material/Autocomplete";
+import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
+import CheckBoxIcon from "@mui/icons-material/CheckBox";
 
 interface FormPostProps {
   values: Post;
@@ -89,6 +93,30 @@ export const FormPost: React.FC<FormPostProps> = ({ values }) => {
     [dispatch, formik]
   );
 
+  const { data: categoriesList } = useListCategoriesQuery();
+
+  const { categoriesIds } = values;
+
+  const [selectedCategories, setSelectedCategories] = useState<Category[]>([]);
+  useEffect(() => {
+    if (categoriesIds?.length && categoriesList?.length) {
+      setSelectedCategories(
+        categoriesList.filter(({ id }) => categoriesIds.includes(id))
+      );
+    }
+  }, [categoriesIds, categoriesList]);
+
+  const handleCategoriesChange = useCallback(
+    (event: SyntheticEvent, values: Category[]) => {
+      setSelectedCategories(values);
+      formik.setFieldValue(
+        "categoriesIds",
+        values.map((cat) => cat.id)
+      );
+    },
+    [formik]
+  );
+
   return (
     <>
       <form onSubmit={formik.handleSubmit}>
@@ -96,6 +124,31 @@ export const FormPost: React.FC<FormPostProps> = ({ values }) => {
           <TextField
             label={t("label.title")}
             {...titleFieldProps}
+            sx={{ maxWidth: FORM_FIELDS_MAX_WIDTH }}
+          />
+          <Autocomplete
+            multiple
+            options={categoriesList || []}
+            value={selectedCategories}
+            onChange={handleCategoriesChange}
+            getOptionLabel={(option: Category) => option.title}
+            renderInput={(params) => (
+              <TextField {...params} label={t("label.categories")} />
+            )}
+            isOptionEqualToValue={(option, value) =>
+              option.title === value.title
+            }
+            renderOption={(props, option, { selected }) => (
+              <li {...props}>
+                <Checkbox
+                  icon={<CheckBoxOutlineBlankIcon fontSize="small" />}
+                  checkedIcon={<CheckBoxIcon fontSize="small" />}
+                  style={{ marginRight: 8 }}
+                  checked={selected}
+                />
+                {option.title}
+              </li>
+            )}
             sx={{ maxWidth: FORM_FIELDS_MAX_WIDTH }}
           />
           <Stack maxWidth={FORM_TEXTAREA_MAX_WIDTH} gap={3}>

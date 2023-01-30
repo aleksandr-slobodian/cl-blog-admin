@@ -8,6 +8,7 @@ export interface Post {
   alias: string;
   datePublished: Dayjs;
   isPublished: boolean;
+  categoriesIds?: string[];
 }
 
 export default Post;
