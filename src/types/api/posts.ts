@@ -1,4 +1,3 @@
-import { Dayjs } from "dayjs";
 export interface Post {
   id: string;
   title: string;
@@ -6,7 +5,7 @@ export interface Post {
   body: string;
   image: string;
   alias: string;
-  datePublished: Dayjs;
+  datePublished: number;
   isPublished: boolean;
   categoriesIds?: string[];
 }

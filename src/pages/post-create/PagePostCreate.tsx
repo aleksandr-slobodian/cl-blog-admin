@@ -14,7 +14,7 @@ export const PagePostCreate = () => {
       body: "",
       alias: "",
       image: "",
-      datePublished: dayjs(),
+      datePublished: dayjs().valueOf(),
       isPublished: true,
     }),
     []

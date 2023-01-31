@@ -1,7 +1,6 @@
 import React from "react";
 import PageContent from "../../components/page-content/PageContent";
 import Typography from "@mui/material/Typography";
-import PostsList from "../posts/components/PostsList";
 import { useListPostsQuery } from "../../services/posts";
 import { PageDefault } from "../default";
 import PageLoadingIndicator from "../../components/page-loading-indicator/PageLoadingIndicator";
@@ -9,6 +8,7 @@ import { useTranslation } from "react-i18next";
 import { Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { APP_PATH_POSTS } from "../../config";
+import PostsList from "../../components/posts-list/PostsList";
 
 export const PageHome: React.FC = () => {
   const { data, error, isLoading } = useListPostsQuery();
@@ -27,10 +27,10 @@ export const PageHome: React.FC = () => {
       <PageContent>
         <Typography variant="h1">{t("h1")}</Typography>
       </PageContent>
-      <PageContent disableGutters={true} isTop={false} sx={{ mt: 2 }}>
+      <PageContent isTop={false} sx={{ mt: 2 }}>
         <PostsList data={data} />
       </PageContent>
-      <PageContent disableGutters={true} isTop={false} sx={{ mt: 3 }}>
+      <PageContent disableGutters={true} isTop={false} sx={{ marginY: 4 }}>
         <Button
           sx={{ alignSelf: "center" }}
           variant="outlined"

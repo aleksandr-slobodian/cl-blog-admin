@@ -1,13 +1,13 @@
-import Divider from "@mui/material/Divider";
 import React, { useCallback } from "react";
 import { useTranslation } from "react-i18next";
-import DialogConfirm from "../../../components/dialog-confirm/DialogConfirm";
-import { useAppDispatch, useAppSelector } from "../../../hooks";
-import { closeDialog, openDialog, selectDialog } from "../../../state/dialog";
-import { Post } from "../../../types/api";
 import { PostListItem } from "./PostListItem";
 import { useSnackbar } from "notistack";
-import { useDeletePostMutation } from "../../../services/posts";
+import { Post } from "../../types/api";
+import { useDeletePostMutation } from "../../services/posts";
+import { useAppDispatch, useAppSelector } from "../../hooks";
+import { closeDialog, openDialog, selectDialog } from "../../state/dialog";
+import DialogConfirm from "../dialog-confirm/DialogConfirm";
+import Stack from "@mui/material/Stack";
 
 interface PostsListProps {
   data?: Post[];
@@ -46,22 +46,23 @@ export const PostsList: React.FC<PostsListProps> = ({ data }) => {
   }
   return (
     <div>
-      <Divider />
-      {data?.map((post) => (
-        <PostListItem
-          key={`ulst-${post.id}`}
-          post={post}
-          isDeleting={isDeleting}
-          deleteAction={(id, title) => {
-            dispatch(
-              openDialog({
-                text: t<string>("text.delete", { item: title }),
-                id,
-              })
-            );
-          }}
-        />
-      ))}
+      <Stack sx={{ flexWrap: "wrap", flexDirection: "row", gap: 3 }}>
+        {data?.map((post) => (
+          <PostListItem
+            key={`ulst-${post.id}`}
+            post={post}
+            isDeleting={isDeleting}
+            deleteAction={(id, title) => {
+              dispatch(
+                openDialog({
+                  text: t<string>("text.delete", { item: title }),
+                  id,
+                })
+              );
+            }}
+          />
+        ))}
+      </Stack>
       <DialogConfirm
         open={isOpen}
         onClose={handleClose}
