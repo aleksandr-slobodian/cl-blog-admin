@@ -1,4 +1,4 @@
-import React, { SyntheticEvent, useCallback, useEffect, useState } from "react";
+import React, { SyntheticEvent, useCallback } from "react";
 import { useFormik } from "formik";
 import { Category, Post } from "../../types/api";
 import useFormPostValidationSchema from "./useFormPostValidationSchema";
@@ -20,10 +20,7 @@ import prepareSubmittedData from "../../utils/prepareSubmittedData";
 import FieldImage from "../field-image/FieldImage";
 import { toggleDrawer } from "../../state/drawers";
 import DrawerImages from "../drawer-images/DrawerImages";
-import { useListCategoriesQuery } from "../../services/categories";
-import Autocomplete from "@mui/material/Autocomplete";
-import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
-import CheckBoxIcon from "@mui/icons-material/CheckBox";
+import CategoriesAutocomplete from "./components/CategoriesAutocomplete";
 
 interface FormPostProps {
   values: Post;
@@ -93,22 +90,10 @@ export const FormPost: React.FC<FormPostProps> = ({ values }) => {
     [dispatch, formik]
   );
 
-  const { data: categoriesList } = useListCategoriesQuery();
-
   const { categoriesIds } = values;
-
-  const [selectedCategories, setSelectedCategories] = useState<Category[]>([]);
-  useEffect(() => {
-    if (categoriesIds?.length && categoriesList?.length) {
-      setSelectedCategories(
-        categoriesList.filter(({ id }) => categoriesIds.includes(id))
-      );
-    }
-  }, [categoriesIds, categoriesList]);
 
   const handleCategoriesChange = useCallback(
     (event: SyntheticEvent, values: Category[]) => {
-      setSelectedCategories(values);
       formik.setFieldValue(
         "categoriesIds",
         values.map((cat) => cat.id)
@@ -126,29 +111,10 @@ export const FormPost: React.FC<FormPostProps> = ({ values }) => {
             {...titleFieldProps}
             sx={{ maxWidth: FORM_FIELDS_MAX_WIDTH }}
           />
-          <Autocomplete
-            multiple
-            options={categoriesList || []}
-            value={selectedCategories}
-            onChange={handleCategoriesChange}
-            getOptionLabel={(option: Category) => option.title}
-            renderInput={(params) => (
-              <TextField {...params} label={t("label.categories")} />
-            )}
-            isOptionEqualToValue={(option, value) =>
-              option.title === value.title
-            }
-            renderOption={(props, option, { selected }) => (
-              <li {...props}>
-                <Checkbox
-                  icon={<CheckBoxOutlineBlankIcon fontSize="small" />}
-                  checkedIcon={<CheckBoxIcon fontSize="small" />}
-                  style={{ marginRight: 8 }}
-                  checked={selected}
-                />
-                {option.title}
-              </li>
-            )}
+          <CategoriesAutocomplete
+            label={t("label.categories")}
+            values={categoriesIds}
+            handleChange={handleCategoriesChange}
             sx={{ maxWidth: FORM_FIELDS_MAX_WIDTH }}
           />
           <Stack maxWidth={FORM_TEXTAREA_MAX_WIDTH} gap={3}>
