@@ -4,9 +4,13 @@ import {
   APP_ITEMS_PER_PAGE,
   API_PATH_LOGIN,
 } from "../config";
-import { User } from "../types/api";
+import { ApiQueryParams, User } from "../types/api";
 import { prepareEndpointPath } from "../utils/prepareEndpointPath";
 import { appApi } from "./api";
+
+interface UserQueryParams extends ApiQueryParams {
+  name_like?: string;
+}
 
 export const usersApi = appApi.injectEndpoints({
   endpoints: (builder) => ({
@@ -33,9 +37,19 @@ export const usersApi = appApi.injectEndpoints({
       query: (id) => prepareEndpointPath(API_PATH_USER, { id }),
       providesTags: (result, error, id) => [{ type: "Users", id }],
     }),
-    listUsers: builder.query<User[], number | void>({
-      query: (page = 1) =>
-        `${API_PATH_USERS}?_page=${page}&_limit=${APP_ITEMS_PER_PAGE}&_sort=name&_order=asc`,
+    listUsers: builder.query<User[], UserQueryParams | undefined>({
+      query(params) {
+        return {
+          url: API_PATH_USERS,
+          method: "GET",
+          params: {
+            _limit: APP_ITEMS_PER_PAGE,
+            _sort: "name",
+            _order: "asc",
+            ...params,
+          },
+        };
+      },
       providesTags: (result) =>
         result
           ? [

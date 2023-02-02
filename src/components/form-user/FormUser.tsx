@@ -13,6 +13,8 @@ import {
   useAddUserMutation,
   useUpdateUserMutation,
 } from "../../services/users";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Checkbox from "@mui/material/Checkbox";
 interface FormUserProps {
   values: User;
 }
@@ -63,7 +65,16 @@ export const FormUser: React.FC<FormUserProps> = ({ values }) => {
           {...passwordFiledProps}
           type="password"
         />
-
+        <FormControlLabel
+          control={
+            <Checkbox
+              name="isAdmin"
+              checked={formik.values.isAdmin}
+              onChange={formik.handleChange}
+            />
+          }
+          label={t("label.isAdmin")}
+        />
         <div>
           <LoadingButton
             disabled={!formik.dirty}

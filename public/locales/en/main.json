@@ -66,6 +66,7 @@
       "upload-all": "Upload all"
     },
     "label": {
+      "isAdmin": "Administrator",
       "categories": "Categories",
       "image": "Image",
       "full-name": "Full name",

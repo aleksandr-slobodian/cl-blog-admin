@@ -11,6 +11,7 @@ export const PageUserCreate = () => {
       name: "",
       email: "",
       password: "",
+      isAdmin: true,
     }),
     []
   );

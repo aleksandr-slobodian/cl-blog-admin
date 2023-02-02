@@ -11,7 +11,9 @@ import UsersList from "./components/UsersList";
 
 export const PageUsers: React.FC = () => {
   const [page, setPage] = useState(1);
-  const { data, error, isLoading, isFetching } = useListUsersQuery(page);
+  const { data, error, isLoading, isFetching } = useListUsersQuery({
+    _page: page.toString(),
+  });
 
   if (error) {
     return <PageDefault />;
