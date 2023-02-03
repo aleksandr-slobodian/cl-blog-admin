@@ -6,7 +6,7 @@ import LanguageDetector from "i18next-browser-languagedetector";
 import Backend from "i18next-chained-backend";
 import LocalStorageBackend from "i18next-localstorage-backend"; // primary use cache
 import HttpApi from "i18next-http-backend"; // fallback http load
-const translationsversion = "0.0.25";
+const translationsversion = "0.0.26";
 export const supportedLngs = ["en", "uk"];
 i18n
   .use(Backend)

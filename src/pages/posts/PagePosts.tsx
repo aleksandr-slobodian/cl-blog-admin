@@ -16,7 +16,10 @@ export const PagePosts: React.FC = () => {
     return cp ? parseInt(cp) : 1;
   }, [searchParams]);
 
-  const { data, error, isLoading, isFetching } = useListPostsQuery(page);
+  const { data, error, isLoading, isFetching } = useListPostsQuery({
+    _page: page.toString(),
+    _expand: "user",
+  });
 
   if (error) {
     return <PageDefault />;

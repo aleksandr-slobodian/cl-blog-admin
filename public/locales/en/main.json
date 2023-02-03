@@ -66,6 +66,8 @@
       "upload-all": "Upload all"
     },
     "label": {
+      "author": "Author",
+      "typeToSearch": "Type to search",
       "isAdmin": "Administrator",
       "categories": "Categories",
       "image": "Image",

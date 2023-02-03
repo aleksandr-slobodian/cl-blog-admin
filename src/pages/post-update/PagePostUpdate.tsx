@@ -10,7 +10,10 @@ import ToolbarTop from "./components/ToolbarTop";
 export const PagePostUpdate = () => {
   const { id } = useParams();
 
-  const { data, isLoading, error } = useGetPostQuery(id as string);
+  const { data, isLoading, error } = useGetPostQuery({
+    id: id as string,
+    _expand: "user",
+  });
 
   const preparedData = useFormsPreparedData(data, { date: ["datePublished"] });
 

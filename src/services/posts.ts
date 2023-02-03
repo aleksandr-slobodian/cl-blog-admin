@@ -1,7 +1,11 @@
 import { API_PATH_POSTS, API_PATH_POST, APP_ITEMS_PER_PAGE } from "../config";
-import { Post } from "../types/api";
+import { ApiQueryParams, Post } from "../types/api";
 import { prepareEndpointPath } from "../utils/prepareEndpointPath";
 import { appApi } from "./api";
+
+interface PostQueryParams extends ApiQueryParams {
+  title_like?: string;
+}
 
 export const postsApi = appApi.injectEndpoints({
   endpoints: (builder) => ({
@@ -15,13 +19,26 @@ export const postsApi = appApi.injectEndpoints({
       },
       invalidatesTags: [{ type: "Posts", id: "PARTIAL-LIST" }],
     }),
-    getPost: builder.query<Post, string>({
-      query: (id) => prepareEndpointPath(API_PATH_POST, { id }),
-      providesTags: (result, error, id) => [{ type: "Posts", id }],
+    getPost: builder.query<Post, { id: string; _expand?: string }>({
+      query: ({ id, _expand }) => ({
+        url: prepareEndpointPath(API_PATH_POST, { id }),
+        params: { _expand },
+      }),
+      providesTags: (result, error, { id }) => [{ type: "Posts", id }],
     }),
-    listPosts: builder.query<Post[], number | void>({
-      query: (page = 1) =>
-        `${API_PATH_POSTS}?_page=${page}&_limit=${APP_ITEMS_PER_PAGE}&_sort=name&_order=asc`,
+    listPosts: builder.query<Post[], PostQueryParams | undefined>({
+      query(params) {
+        return {
+          url: API_PATH_POSTS,
+          method: "GET",
+          params: {
+            _limit: APP_ITEMS_PER_PAGE,
+            _sort: "datePublished",
+            _order: "desc",
+            ...params,
+          },
+        };
+      },
       providesTags: (result) =>
         result
           ? [

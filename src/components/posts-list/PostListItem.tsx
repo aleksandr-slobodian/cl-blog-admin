@@ -6,7 +6,7 @@ import React, { useCallback, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import { Post } from "../../types/api";
-import { APP_PATH_POST, IMAGES_BASE_PATH } from "../../config";
+import { APP_PATH_POST, APP_PATH_USER, IMAGES_BASE_PATH } from "../../config";
 import { prepareEndpointPath } from "../../utils/prepareEndpointPath";
 import Card from "@mui/material/Card";
 import CardHeader from "@mui/material/CardHeader";
@@ -29,8 +29,16 @@ export const PostListItem: React.FC<PostListItemProps> = ({
   deleteAction,
   isDeleting,
 }) => {
-  const { title, id, isPublished, alias, datePublished, image, subtitle } =
-    post;
+  const {
+    title,
+    id,
+    isPublished,
+    alias,
+    datePublished,
+    image,
+    subtitle,
+    user,
+  } = post;
 
   const navigate = useNavigate();
 
@@ -48,17 +56,30 @@ export const PostListItem: React.FC<PostListItemProps> = ({
 
   const formatedDate = useDateTime(datePublished * 1000, "long", "datetime");
 
+  const handleAvatarClick = useCallback(() => {
+    if (user?.id) {
+      navigate(
+        prepareEndpointPath(APP_PATH_USER, {
+          id: user.id,
+        })
+      );
+    }
+  }, [navigate, user?.id]);
+
   return (
     <Card sx={{ maxWidth: 360 }}>
       <CardHeader
         avatar={
           <Avatar
             sx={{
+              cursor: "pointer",
               mr: 1,
               bgcolor: isPublished ? blue[500] : grey[300],
             }}
+            title={user ? user.name : ""}
+            onClick={handleAvatarClick}
           >
-            {title[0]}
+            {user ? user.name[0] : title[0]}
           </Avatar>
         }
         action={

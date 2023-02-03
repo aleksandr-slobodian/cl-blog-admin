@@ -1,6 +1,6 @@
 import React, { SyntheticEvent, useCallback } from "react";
 import { useFormik } from "formik";
-import { Category, Post } from "../../types/api";
+import { Category, Post, User } from "../../types/api";
 import useFormPostValidationSchema from "./useFormPostValidationSchema";
 import { useAppDispatch, useFormFormikTextFieldProps } from "../../hooks";
 import TextField from "@mui/material/TextField";
@@ -21,6 +21,7 @@ import FieldImage from "../field-image/FieldImage";
 import { toggleDrawer } from "../../state/drawers";
 import DrawerImages from "../drawer-images/DrawerImages";
 import CategoriesAutocomplete from "./components/CategoriesAutocomplete";
+import AuthorAutocomplete from "./components/AuthorAutocomplete";
 
 interface FormPostProps {
   values: Post;
@@ -49,6 +50,9 @@ export const FormPost: React.FC<FormPostProps> = ({ values }) => {
 
       try {
         if (values.id) {
+          if (preparedValues?.user) {
+            delete preparedValues.user;
+          }
           await updatePost(preparedValues).unwrap();
         } else {
           const id = uuid();
@@ -67,6 +71,9 @@ export const FormPost: React.FC<FormPostProps> = ({ values }) => {
     },
   });
 
+  const userIdFieldProps = useFormFormikTextFieldProps(formik, "userId", {
+    onChange: undefined,
+  });
   const titleFieldProps = useFormFormikTextFieldProps(formik, "title");
   const aliasFieldProps = useFormFormikTextFieldProps(formik, "alias");
   const subtitleFieldProps = useFormFormikTextFieldProps(formik, "subtitle");
@@ -90,7 +97,7 @@ export const FormPost: React.FC<FormPostProps> = ({ values }) => {
     [dispatch, formik]
   );
 
-  const { categoriesIds } = values;
+  const { categoriesIds, user } = values;
 
   const handleCategoriesChange = useCallback(
     (event: SyntheticEvent, values: Category[]) => {
@@ -98,6 +105,14 @@ export const FormPost: React.FC<FormPostProps> = ({ values }) => {
         "categoriesIds",
         values.map((cat) => cat.id)
       );
+    },
+    [formik]
+  );
+
+  const handleUserChange = useCallback(
+    (event: SyntheticEvent, value: User | null | undefined) => {
+      formik.setFieldValue("userId", value?.id);
+      formik.setFieldValue("user", value);
     },
     [formik]
   );
@@ -115,6 +130,15 @@ export const FormPost: React.FC<FormPostProps> = ({ values }) => {
             label={t("label.categories")}
             values={categoriesIds}
             handleChange={handleCategoriesChange}
+            sx={{ maxWidth: FORM_FIELDS_MAX_WIDTH }}
+          />
+          <AuthorAutocomplete
+            selected={user}
+            textFieldProps={userIdFieldProps}
+            label={t("label.author")}
+            placeholder={t("label.typeToSearch")}
+            noOptionsText={t<string>("label.typeToSearch")}
+            handleChange={handleUserChange}
             sx={{ maxWidth: FORM_FIELDS_MAX_WIDTH }}
           />
           <Stack maxWidth={FORM_TEXTAREA_MAX_WIDTH} gap={3}>

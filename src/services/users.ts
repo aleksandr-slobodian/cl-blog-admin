@@ -10,6 +10,8 @@ import { appApi } from "./api";
 
 interface UserQueryParams extends ApiQueryParams {
   name_like?: string;
+  id?: string;
+  isAdmin?: boolean;
 }
 
 export const usersApi = appApi.injectEndpoints({

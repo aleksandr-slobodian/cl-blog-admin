@@ -8,4 +8,6 @@ export interface ApiQueryParams {
   _limit?: string;
   _sort?: string;
   _order?: string;
+  _expand?: string;
+  _embed?: string;
 }

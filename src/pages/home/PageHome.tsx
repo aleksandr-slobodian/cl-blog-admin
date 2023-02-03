@@ -11,7 +11,10 @@ import { APP_PATH_POSTS } from "../../config";
 import PostsList from "../../components/posts-list/PostsList";
 
 export const PageHome: React.FC = () => {
-  const { data, error, isLoading } = useListPostsQuery();
+  const { data, error, isLoading } = useListPostsQuery({
+    _limit: "10",
+    _expand: "user",
+  });
   const { t } = useTranslation("main", { keyPrefix: "page.home" });
   const navigate = useNavigate();
   if (error) {

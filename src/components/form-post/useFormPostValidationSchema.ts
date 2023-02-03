@@ -27,6 +27,7 @@ export const useFormPostValidationSchema = () => {
           .min(FORM_V_TITLE_MIN, t<string>("min", { min: FORM_V_TITLE_MIN }))
           .max(FORM_V_TITLE_MAX, t<string>("max", { max: FORM_V_TITLE_MAX }))
           .required(t<string>("required")),
+        userId: yup.string().required(t<string>("required")),
         subtitle: yup
           .string()
           .min(
