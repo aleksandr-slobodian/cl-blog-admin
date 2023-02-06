@@ -127,7 +127,9 @@ export const AuthorAutocomplete: React.FC<AuthorAutocompleteProps> = ({
           </li>
         );
       }}
-      isOptionEqualToValue={(option, value) => option.id === value.id}
+      isOptionEqualToValue={(option, value) =>
+        option.id === value.id && option.name === value.name
+      }
       sx={sx}
     />
   );

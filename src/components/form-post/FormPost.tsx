@@ -57,7 +57,14 @@ export const FormPost: React.FC<FormPostProps> = ({ values }) => {
         } else {
           const id = uuid();
           await addPost({ ...preparedValues, id }).unwrap();
-          resetForm();
+          resetForm({
+            values: {
+              ...values,
+              categoriesIds: newValues.categoriesIds,
+              userId: newValues.userId,
+              user: newValues.user,
+            },
+          });
         }
         enqueueSnackbar(t(!values.id ? "success.create" : "success.update"), {
           variant: "success",
@@ -111,7 +118,7 @@ export const FormPost: React.FC<FormPostProps> = ({ values }) => {
 
   const handleUserChange = useCallback(
     (event: SyntheticEvent, value: User | null | undefined) => {
-      formik.setFieldValue("userId", value?.id);
+      formik.setFieldValue("userId", value?.id || "");
       formik.setFieldValue("user", value);
     },
     [formik]
