@@ -81,7 +81,9 @@
       "published": "Published",
       "date-published": "Date published",
       "dropzone-drop-or-select": "Drag 'n' drop some files here, or click to select files",
+      "dropzone-drop-or-select-one": "Drag 'n' drop file here, or click to select file",
       "dropzone-drop-here": "Drop the files here ...",
+      "dropzone-drop-here-one": "Drop the file here ...",
       "dropzone-caption": "Only *.jpeg and *.png images will be accepted and {number, plural, =1 {one file is} other {# files are}} the maximum number of files you can drop here"
     },
     "error": {
