@@ -47,12 +47,11 @@ export const FormPost: React.FC<FormPostProps> = ({ values }) => {
       const preparedValues = prepareSubmittedData(newValues, {
         date: ["datePublished"],
       });
-
+      if (preparedValues?.user) {
+        delete preparedValues.user;
+      }
       try {
         if (values.id) {
-          if (preparedValues?.user) {
-            delete preparedValues.user;
-          }
           await updatePost(preparedValues).unwrap();
         } else {
           const id = uuid();
