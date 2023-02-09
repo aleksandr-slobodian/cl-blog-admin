@@ -24,3 +24,5 @@ yarn-error.log*
 db.json
 public/files/images/*
 !public/files/images/README.md
+public/files/avatars/*
+!public/files/avatars/README.md

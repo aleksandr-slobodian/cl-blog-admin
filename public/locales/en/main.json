@@ -63,7 +63,8 @@
       "update": "Update",
       "upload": "Upload",
       "clear-all": "Clear all",
-      "upload-all": "Upload all"
+      "upload-all": "Upload all",
+      "clear": "Clear"
     },
     "label": {
       "author": "Author",
@@ -90,7 +91,9 @@
       "create": "Failed to create.",
       "update": "Failed to update.",
       "delete": "Failed to delete.",
+      "upload": "Failed to upload.",
       "login": "Failed to login.",
+      "select-file-first": "Select file first",
       "max-file-size": "File size is larger than {number} Kb",
       "max-file-name": "File name is larger than {number} characters",
       "files-rejected": "{number, plural, =1 {One file has} other {# files have}} been rejected",
@@ -100,6 +103,7 @@
       "create": "Create successfully.",
       "update": "Updated successfully.",
       "delete": "Deleted successfully.",
+      "upload": "Uploaded successfully.",
       "login": "Welcome, {name}."
     }
   },

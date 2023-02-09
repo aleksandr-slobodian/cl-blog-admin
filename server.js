@@ -10,6 +10,7 @@ var multer  = require('multer');
 
 const FILE_UPLOAD_BASE_PATH = process.env.FILE_UPLOAD_BASE_PATH;
 const API_IMAGES_PATH = '/api/images';
+const API_AVATARS_PATH = '/api/avatars';
 
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -17,12 +18,15 @@ var storage = multer.diskStorage({
       case API_IMAGES_PATH:
         cb(null, path.join(__dirname, FILE_UPLOAD_BASE_PATH, '/images'));
       break;
+      case API_AVATARS_PATH:
+        cb(null, path.join(__dirname, FILE_UPLOAD_BASE_PATH, '/avatars'));
+      break;
       default:
         cb(null, path.join(__dirname, FILE_UPLOAD_BASE_PATH));
     }
   },
   filename: function (req, file, cb) {
-    if(req.url === API_IMAGES_PATH && req.body.id){
+    if((req.url === API_IMAGES_PATH || req.url === API_AVATARS_PATH) && req.body.id){
       const ext = file.mimetype.split('/')[1];
       const fileName = `${req.body.id}.${ext}`;
       req.body['name'] = fileName;

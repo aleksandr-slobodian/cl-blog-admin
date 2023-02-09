@@ -29,6 +29,8 @@ import RotateRightIcon from "@mui/icons-material/RotateRight";
 
 export type AvatarEditorHandle = {
   getCanvas?: () => HTMLCanvasElement | undefined;
+  getFile?: () => File | undefined;
+  clear?: () => void;
 };
 
 interface AvatarEditorProps {
@@ -57,6 +59,12 @@ export const AvatarEditor = forwardRef<AvatarEditorHandle, AvatarEditorProps>(
             return editor.current.getImageScaledToCanvas();
           }
           return undefined;
+        },
+        getFile: () => image,
+        clear() {
+          setImage(undefined);
+          setRotete(0);
+          setScale(1);
         },
       }),
       [editor, image]
@@ -224,25 +232,25 @@ export const AvatarEditor = forwardRef<AvatarEditorHandle, AvatarEditorProps>(
             </Box>
           )}
         </Box>
-        {!!image ? (
-          <Stack flexDirection="row" gap={2} alignItems="center">
-            <IconButton onClick={handleRotateLeft} edge="start">
-              <RotateLeftIcon />
-            </IconButton>
-            <Slider
-              value={scale}
-              min={1}
-              max={2}
-              step={0.01}
-              aria-label="Default"
-              valueLabelDisplay="off"
-              onChange={handleChangeScale}
-            />
-            <IconButton onClick={handleRotateRight} edge="end">
-              <RotateRightIcon />
-            </IconButton>
-          </Stack>
-        ) : null}
+
+        <Stack flexDirection="row" gap={2} alignItems="center">
+          <IconButton onClick={handleRotateLeft} edge="start" disabled={!image}>
+            <RotateLeftIcon />
+          </IconButton>
+          <Slider
+            value={scale}
+            min={1}
+            max={2}
+            step={0.01}
+            aria-label="Default"
+            valueLabelDisplay="off"
+            onChange={handleChangeScale}
+            disabled={!image}
+          />
+          <IconButton onClick={handleRotateRight} edge="end" disabled={!image}>
+            <RotateRightIcon />
+          </IconButton>
+        </Stack>
       </Stack>
     );
   }
