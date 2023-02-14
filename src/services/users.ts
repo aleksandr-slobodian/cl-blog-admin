@@ -64,7 +64,7 @@ export const usersApi = appApi.injectEndpoints({
       query(body) {
         return {
           url: prepareEndpointPath(API_PATH_USER, { id: body.id }),
-          method: "PUT",
+          method: "PATCH",
           body,
         };
       },

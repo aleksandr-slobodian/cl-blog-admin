@@ -64,7 +64,9 @@
       "upload": "Upload",
       "clear-all": "Clear all",
       "upload-all": "Upload all",
-      "clear": "Clear"
+      "clear": "Clear",
+      "delete": "Delete",
+      "apply": "Apply"
     },
     "label": {
       "author": "Author",

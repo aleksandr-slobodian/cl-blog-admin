@@ -4,7 +4,7 @@ import { prepareEndpointPath } from "../utils/prepareEndpointPath";
 import { appApi } from "./api";
 
 interface AvatarListQueryParams extends ApiQueryParams {
-  user_id?: string;
+  userId?: string;
 }
 
 export const avatarsApi = appApi.injectEndpoints({
@@ -17,6 +17,7 @@ export const avatarsApi = appApi.injectEndpoints({
           body,
         };
       },
+      invalidatesTags: [{ type: "Avatars", id: "LIST" }],
     }),
     listAvatars: builder.query<Avatar[], AvatarListQueryParams | undefined>({
       query: (params) => ({

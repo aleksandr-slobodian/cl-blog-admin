@@ -46,7 +46,7 @@ server.use(jsonServer.bodyParser)
 server.post('/api/login',  (req, res) => {
   const {email, password} = req.body;
   if(email && password){
-    const users = router.db.__wrapped__?.users.filter((user) => email === user.email && password === user.password && user.isAdmin);
+    const users = router.db.get('users').valueOf().filter((user) => email === user.email && password === user.password && user.isAdmin);
     if(users && users.length){
       res.json(users[0])
     }else{

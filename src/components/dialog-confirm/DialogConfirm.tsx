@@ -11,7 +11,7 @@ import TransitionSlideUp from "../transition-slide-up/TransitionSlideUp";
 import { useTranslation } from "react-i18next";
 
 interface DialogConfirmProps {
-  open: boolean;
+  open?: boolean;
   onClose?: (isAgree: boolean) => void;
   title?: string;
   text: string;
