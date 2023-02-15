@@ -6,7 +6,12 @@ import React, { useCallback, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import { Post } from "../../types/api";
-import { APP_PATH_POST, APP_PATH_USER, IMAGES_BASE_PATH } from "../../config";
+import {
+  APP_PATH_POST,
+  APP_PATH_USER,
+  AVATARS_BASE_PATH,
+  IMAGES_BASE_PATH,
+} from "../../config";
 import { prepareEndpointPath } from "../../utils/prepareEndpointPath";
 import Card from "@mui/material/Card";
 import CardHeader from "@mui/material/CardHeader";
@@ -76,6 +81,9 @@ export const PostListItem: React.FC<PostListItemProps> = ({
               mr: 1,
               bgcolor: isPublished ? blue[500] : grey[300],
             }}
+            src={
+              user?.avatar ? `${AVATARS_BASE_PATH}${user?.avatar}` : undefined
+            }
             title={user ? user.name : ""}
             onClick={handleAvatarClick}
           >

@@ -14,6 +14,8 @@ import {
   selectDrawers,
   toggleDrawer,
 } from "../../state/drawers";
+import UserAvatarIconButton from "../user-avatars/UserAvatarIconButton";
+import { useCallback } from "react";
 
 export const DrawerMain = () => {
   const dispatch = useAppDispatch();
@@ -21,21 +23,20 @@ export const DrawerMain = () => {
   const drawers = useAppSelector(selectDrawers);
   const { isOpen } = selectDrawerById(drawers, "main-drawer") || {};
 
+  const handleClose = useCallback(() => {
+    dispatch(toggleDrawer("main-drawer"));
+  }, [dispatch]);
+
   return (
-    <Drawer
-      anchor={"left"}
-      open={isOpen}
-      onClose={() => dispatch(toggleDrawer("main-drawer"))}
-    >
-      <Toolbar
-        variant="dense"
-        sx={{ alignContent: "center", justifyContent: "flex-end" }}
-      >
-        <IconButton
-          edge="end"
-          color="inherit"
-          onClick={() => dispatch(toggleDrawer("main-drawer"))}
-        >
+    <Drawer anchor={"left"} open={isOpen} onClose={handleClose}>
+      <Toolbar variant="dense" sx={{ alignContent: "center" }}>
+        <UserAvatarIconButton
+          edge="start"
+          showName={true}
+          onClick={handleClose}
+        />
+        <Box sx={{ flexGrow: 1 }} />
+        <IconButton edge="end" color="inherit" onClick={handleClose}>
           <CloseIcon />
         </IconButton>
       </Toolbar>

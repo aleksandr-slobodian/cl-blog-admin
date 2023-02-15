@@ -7,6 +7,8 @@ import {
 import { ApiQueryParams, User } from "../types/api";
 import { prepareEndpointPath } from "../utils/prepareEndpointPath";
 import { appApi } from "./api";
+import { RootState } from "../store";
+import { patchUserInfo } from "../state/auth";
 
 interface UserQueryParams extends ApiQueryParams {
   name_like?: string;
@@ -67,6 +69,18 @@ export const usersApi = appApi.injectEndpoints({
           method: "PATCH",
           body,
         };
+      },
+      async onQueryStarted({ id }, { queryFulfilled, getState, dispatch }) {
+        queryFulfilled.then((result) => {
+          const {
+            auth: { user },
+          } = getState() as RootState;
+          if (id === user?.id) {
+            if (result.data) {
+              dispatch(patchUserInfo(result.data));
+            }
+          }
+        });
       },
       invalidatesTags: (result, error, { id }) => [{ type: "Users", id }],
     }),

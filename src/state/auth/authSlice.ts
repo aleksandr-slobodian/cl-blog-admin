@@ -1,6 +1,6 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../../store";
-import { User } from "../../types/api";
+import { User, UserInfo } from "../../types/api";
 import { usersApi } from "../../services/users";
 
 interface AuthState {
@@ -16,6 +16,11 @@ export const authSlice = createSlice({
     logout: (state) => {
       state.user = null;
     },
+    patchUserInfo: (state, action: PayloadAction<UserInfo>) => {
+      if (state.user) {
+        state.user = { ...state.user, ...action.payload };
+      }
+    },
   },
   extraReducers: (builder) => {
     builder.addMatcher(
@@ -27,7 +32,7 @@ export const authSlice = createSlice({
   },
 });
 
-export const { logout } = authSlice.actions;
+export const { logout, patchUserInfo } = authSlice.actions;
 
 export const selectAuth = (state: RootState) => state.auth;
 

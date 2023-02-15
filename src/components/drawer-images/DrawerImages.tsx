@@ -53,7 +53,7 @@ export const DrawerImages: React.FC<{
         </IconButton>
       </Toolbar>
       <Divider />
-      <Box width={"90vw"} p={3} flexGrow={1}>
+      <Box width={"100vw"} maxWidth={800} p={3} flexGrow={1}>
         <TabContext value={value}>
           <Box sx={{ borderBottom: 1, borderColor: "divider", mb: 2 }}>
             <TabList onChange={handleChange}>

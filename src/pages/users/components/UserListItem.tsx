@@ -6,7 +6,7 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
 import React, { useCallback, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
-import { APP_PATH_USER } from "../../../config";
+import { APP_PATH_USER, AVATARS_BASE_PATH } from "../../../config";
 import { User } from "../../../types/api";
 import { prepareEndpointPath } from "../../../utils/prepareEndpointPath";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
@@ -22,7 +22,7 @@ export const UserListItem: React.FC<UserListItemProps> = ({
   deleteAction,
   isDeleting,
 }) => {
-  const { name, id } = user;
+  const { name, id, avatar } = user;
 
   const navigate = useNavigate();
 
@@ -57,6 +57,7 @@ export const UserListItem: React.FC<UserListItemProps> = ({
             mr: 1,
             bgcolor: blue[500],
           }}
+          src={avatar ? `${AVATARS_BASE_PATH}${avatar}` : undefined}
         >
           {name[0]}
         </Avatar>

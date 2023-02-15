@@ -33,6 +33,7 @@ export const FormUser: React.FC<FormUserProps> = ({ values }) => {
     onSubmit: async (newValues, { setSubmitting, resetForm }) => {
       try {
         if (values.id) {
+          delete newValues["avatar"];
           await updatUser(newValues).unwrap();
         } else {
           const id = uuid();
