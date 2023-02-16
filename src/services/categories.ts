@@ -38,7 +38,8 @@ export const categoriesApi = appApi.injectEndpoints({
           body,
         };
       },
-      invalidatesTags: (result, error, { id }) => [{ type: "Categories", id }],
+      invalidatesTags: (result, error, { id }) =>
+        !error ? [{ type: "Categories", id }] : [],
     }),
     deleteCategory: builder.mutation<{ success: boolean; id: string }, string>({
       query(id) {

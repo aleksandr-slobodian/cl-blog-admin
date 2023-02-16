@@ -10,6 +10,7 @@ import { useSnackbar } from "notistack";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import { Avatar } from "../../types/api";
+import { useMutationsSnackbar } from "../../hooks/snackbar";
 
 interface UserAvatarsUploaderProps {
   userId: string;
@@ -25,7 +26,14 @@ export const UserAvatarsUploader: React.FC<UserAvatarsUploaderProps> = ({
   const { t } = useTranslation("main", { keyPrefix: "form" });
   const { enqueueSnackbar } = useSnackbar();
 
-  const [addAvatar, { isLoading }] = useAddAvatarMutation();
+  const [addAvatar, { isLoading, isSuccess, isError }] = useAddAvatarMutation();
+
+  useMutationsSnackbar(
+    isSuccess,
+    isError,
+    "form.success.upload",
+    "form.error.upload"
+  );
 
   const handleClear = useCallback(
     () => editorRef.current?.clear && editorRef.current.clear(),
@@ -52,19 +60,10 @@ export const UserAvatarsUploader: React.FC<UserAvatarsUploaderProps> = ({
         formData.set("id", id);
         formData.set("userId", userId);
         formData.set("file", file, imageFile?.name);
-        try {
-          const avatar = await addAvatar(formData).unwrap();
-          handleClear();
-          if (onUploadSuccess && avatar) {
-            onUploadSuccess(avatar);
-          }
-          enqueueSnackbar(t("success.upload"), {
-            variant: "success",
-          });
-        } catch (error) {
-          enqueueSnackbar(t("error.upload"), {
-            variant: "error",
-          });
+        const avatar = await addAvatar(formData).unwrap();
+        handleClear();
+        if (onUploadSuccess && avatar) {
+          onUploadSuccess(avatar);
         }
       });
     }
@@ -83,7 +82,7 @@ export const UserAvatarsUploader: React.FC<UserAvatarsUploaderProps> = ({
         >
           {t("button.upload")}
         </LoadingButton>
-        <Button variant="outlined" onClick={handleClear}>
+        <Button variant="outlined" onClick={handleClear} disabled={isLoading}>
           {t("button.clear")}
         </Button>
       </Stack>

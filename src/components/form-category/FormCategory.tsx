@@ -1,5 +1,5 @@
-import React from "react";
-import { useFormik } from "formik";
+import React, { useCallback } from "react";
+import { FormikConfig, useFormik } from "formik";
 import { Category } from "../../types/api";
 import useFormCategoryValidationSchema from "./useFormCategoryValidationSchema";
 import { useFormFormikTextFieldProps } from "../../hooks";
@@ -8,13 +8,13 @@ import LoadingButton from "@mui/lab/LoadingButton";
 import Stack from "@mui/system/Stack";
 import { useTranslation } from "react-i18next";
 import { v4 as uuid } from "uuid";
-import { useSnackbar } from "notistack";
 import {
   useAddCategoryMutation,
   useUpdateCategoryMutation,
 } from "../../services/categories";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
+import { useMutationsSnackbar } from "../../hooks/snackbar";
 
 interface FormCategoryProps {
   values: Category;
@@ -23,33 +23,47 @@ interface FormCategoryProps {
 export const FormCategory: React.FC<FormCategoryProps> = ({ values }) => {
   const { t } = useTranslation("main", { keyPrefix: "form" });
 
-  const [addCategory] = useAddCategoryMutation();
-  const [updateCategory] = useUpdateCategoryMutation();
+  const [
+    addCategory,
+    {
+      isLoading: isLoadingCreateCategory,
+      isSuccess: isSuccessCreateCategory,
+      isError: isErrorCreateCategory,
+    },
+  ] = useAddCategoryMutation();
+  const [
+    updateCategory,
+    {
+      isLoading: isLoadingUpdateCategory,
+      isSuccess: isSuccessUpdateCategory,
+      isError: isErrorUpdateCategory,
+    },
+  ] = useUpdateCategoryMutation();
 
-  const { enqueueSnackbar } = useSnackbar();
+  useMutationsSnackbar(
+    !values.id ? isSuccessCreateCategory : isSuccessUpdateCategory,
+    !values.id ? isErrorCreateCategory : isErrorUpdateCategory,
+    !values.id ? "form.success.create" : "form.success.update",
+    !values.id ? "form.error.create" : "form.error.update"
+  );
+
+  const onSubmit = useCallback<FormikConfig<Category>["onSubmit"]>(
+    async (newValues, { resetForm }) => {
+      if (values.id) {
+        updateCategory(newValues).unwrap();
+      } else {
+        const id = uuid();
+        await addCategory({ ...newValues, id }).unwrap();
+        resetForm();
+      }
+    },
+    [addCategory, updateCategory, values.id]
+  );
 
   const formik = useFormik({
     initialValues: values,
     validationSchema: useFormCategoryValidationSchema(),
-    onSubmit: async (newValues, { setSubmitting, resetForm }) => {
-      try {
-        if (values.id) {
-          await updateCategory(newValues).unwrap();
-        } else {
-          const id = uuid();
-          await addCategory({ ...newValues, id }).unwrap();
-          resetForm();
-        }
-        enqueueSnackbar(t(!values.id ? "success.create" : "success.update"), {
-          variant: "success",
-        });
-      } catch (error) {
-        enqueueSnackbar(t(!values.id ? "error.create" : "error.update"), {
-          variant: "error",
-        });
-      }
-      setSubmitting(false);
-    },
+    onSubmit,
   });
 
   const titleFieldProps = useFormFormikTextFieldProps(formik, "title");
@@ -73,7 +87,9 @@ export const FormCategory: React.FC<FormCategoryProps> = ({ values }) => {
         <div>
           <LoadingButton
             disabled={!formik.dirty}
-            loading={formik.isSubmitting}
+            loading={
+              !values.id ? isLoadingCreateCategory : isLoadingUpdateCategory
+            }
             color="primary"
             variant="contained"
             type="submit"

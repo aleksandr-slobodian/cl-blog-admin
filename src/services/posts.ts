@@ -55,7 +55,8 @@ export const postsApi = appApi.injectEndpoints({
           body,
         };
       },
-      invalidatesTags: (result, error, { id }) => [{ type: "Posts", id }],
+      invalidatesTags: (result, error, { id }) =>
+        !error ? [{ type: "Posts", id }] : [],
     }),
     deletePost: builder.mutation<{ success: boolean; id: string }, string>({
       query(id) {

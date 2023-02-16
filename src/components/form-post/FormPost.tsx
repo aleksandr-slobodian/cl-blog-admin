@@ -1,5 +1,5 @@
 import React, { SyntheticEvent, useCallback } from "react";
-import { useFormik } from "formik";
+import { FormikConfig, useFormik } from "formik";
 import { Category, Post, User } from "../../types/api";
 import useFormPostValidationSchema from "./useFormPostValidationSchema";
 import { useAppDispatch, useFormFormikTextFieldProps } from "../../hooks";
@@ -8,7 +8,6 @@ import LoadingButton from "@mui/lab/LoadingButton";
 import Stack from "@mui/system/Stack";
 import { useTranslation } from "react-i18next";
 import { v4 as uuid } from "uuid";
-import { useSnackbar } from "notistack";
 import {
   useAddPostMutation,
   useUpdatePostMutation,
@@ -22,6 +21,7 @@ import { toggleDrawer } from "../../state/drawers";
 import DrawerImages from "../drawer-images/DrawerImages";
 import CategoriesAutocomplete from "./components/CategoriesAutocomplete";
 import AuthorAutocomplete from "./components/AuthorAutocomplete";
+import { useMutationsSnackbar } from "../../hooks/snackbar";
 
 interface FormPostProps {
   values: Post;
@@ -35,46 +35,62 @@ export const FormPost: React.FC<FormPostProps> = ({ values }) => {
 
   const dispatch = useAppDispatch();
 
-  const [addPost] = useAddPostMutation();
-  const [updatePost] = useUpdatePostMutation();
+  const [
+    addPost,
+    {
+      isLoading: isLoadingCreatePost,
+      isSuccess: isSuccessCreatePost,
+      isError: isErrorCreatePost,
+    },
+  ] = useAddPostMutation();
+  const [
+    updatePost,
+    {
+      isLoading: isLoadingUpdatePost,
+      isSuccess: isSuccessUpdatePost,
+      isError: isErrorUpdatePost,
+    },
+  ] = useUpdatePostMutation();
 
-  const { enqueueSnackbar } = useSnackbar();
+  useMutationsSnackbar(
+    !values.id ? isSuccessCreatePost : isSuccessUpdatePost,
+    !values.id ? isErrorCreatePost : isErrorUpdatePost,
+    !values.id ? "form.success.create" : "form.success.update",
+    !values.id ? "form.error.create" : "form.error.update"
+  );
+
+  const onSubmit = useCallback<FormikConfig<Post>["onSubmit"]>(
+    async (newValues, { resetForm }) => {
+      const preparedValues = prepareSubmittedData(newValues, {
+        date: ["datePublished"],
+      });
+
+      if (preparedValues?.user) {
+        delete preparedValues.user;
+      }
+
+      if (values.id) {
+        updatePost(preparedValues).unwrap();
+      } else {
+        const id = uuid();
+        await addPost({ ...preparedValues, id }).unwrap();
+        resetForm({
+          values: {
+            ...values,
+            categoriesIds: newValues.categoriesIds,
+            userId: newValues.userId,
+            user: newValues.user,
+          },
+        });
+      }
+    },
+    [addPost, updatePost, values]
+  );
 
   const formik = useFormik({
     initialValues: values,
     validationSchema: useFormPostValidationSchema(),
-    onSubmit: async (newValues, { setSubmitting, resetForm }) => {
-      const preparedValues = prepareSubmittedData(newValues, {
-        date: ["datePublished"],
-      });
-      if (preparedValues?.user) {
-        delete preparedValues.user;
-      }
-      try {
-        if (values.id) {
-          await updatePost(preparedValues).unwrap();
-        } else {
-          const id = uuid();
-          await addPost({ ...preparedValues, id }).unwrap();
-          resetForm({
-            values: {
-              ...values,
-              categoriesIds: newValues.categoriesIds,
-              userId: newValues.userId,
-              user: newValues.user,
-            },
-          });
-        }
-        enqueueSnackbar(t(!values.id ? "success.create" : "success.update"), {
-          variant: "success",
-        });
-      } catch (error) {
-        enqueueSnackbar(t(!values.id ? "error.create" : "error.update"), {
-          variant: "error",
-        });
-      }
-      setSubmitting(false);
-    },
+    onSubmit,
   });
 
   const userIdFieldProps = useFormFormikTextFieldProps(formik, "userId", {
@@ -194,7 +210,7 @@ export const FormPost: React.FC<FormPostProps> = ({ values }) => {
           <div>
             <LoadingButton
               disabled={!formik.dirty}
-              loading={formik.isSubmitting}
+              loading={!values.id ? isLoadingCreatePost : isLoadingUpdatePost}
               color="primary"
               variant="contained"
               type="submit"

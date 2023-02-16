@@ -1,5 +1,5 @@
-import React from "react";
-import { useFormik } from "formik";
+import React, { useCallback } from "react";
+import { FormikConfig, useFormik } from "formik";
 import { User } from "../../types/api";
 import useFormUserValidationSchema from "./useFormUserValidationSchema";
 import { useFormFormikTextFieldProps } from "../../hooks";
@@ -8,13 +8,13 @@ import LoadingButton from "@mui/lab/LoadingButton";
 import Stack from "@mui/system/Stack";
 import { useTranslation } from "react-i18next";
 import { v4 as uuid } from "uuid";
-import { useSnackbar } from "notistack";
 import {
   useAddUserMutation,
   useUpdateUserMutation,
 } from "../../services/users";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
+import { useMutationsSnackbar } from "../../hooks/snackbar";
 interface FormUserProps {
   values: User;
 }
@@ -22,34 +22,48 @@ interface FormUserProps {
 export const FormUser: React.FC<FormUserProps> = ({ values }) => {
   const { t } = useTranslation("main", { keyPrefix: "form" });
 
-  const [addUser] = useAddUserMutation();
-  const [updatUser] = useUpdateUserMutation();
+  const [
+    addUser,
+    {
+      isLoading: isLoadingCreateUser,
+      isSuccess: isSuccessCreateUser,
+      isError: isErrorCreateUser,
+    },
+  ] = useAddUserMutation();
+  const [
+    updatUser,
+    {
+      isLoading: isLoadingUpdateUser,
+      isSuccess: isSuccessUpdateUser,
+      isError: isErrorUpdateUser,
+    },
+  ] = useUpdateUserMutation();
 
-  const { enqueueSnackbar } = useSnackbar();
+  useMutationsSnackbar(
+    !values.id ? isSuccessCreateUser : isSuccessUpdateUser,
+    !values.id ? isErrorCreateUser : isErrorUpdateUser,
+    !values.id ? "form.success.create" : "form.success.update",
+    !values.id ? "form.error.create" : "form.error.update"
+  );
+
+  const onSubmit = useCallback<FormikConfig<User>["onSubmit"]>(
+    async (newValues, { resetForm }) => {
+      if (values.id) {
+        delete newValues["avatar"];
+        updatUser(newValues).unwrap();
+      } else {
+        const id = uuid();
+        await addUser({ ...newValues, id }).unwrap();
+        resetForm();
+      }
+    },
+    [addUser, updatUser, values.id]
+  );
 
   const formik = useFormik({
     initialValues: values,
     validationSchema: useFormUserValidationSchema(),
-    onSubmit: async (newValues, { setSubmitting, resetForm }) => {
-      try {
-        if (values.id) {
-          delete newValues["avatar"];
-          await updatUser(newValues).unwrap();
-        } else {
-          const id = uuid();
-          await addUser({ ...newValues, id }).unwrap();
-          resetForm();
-        }
-        enqueueSnackbar(t(!values.id ? "success.create" : "success.update"), {
-          variant: "success",
-        });
-      } catch (error) {
-        enqueueSnackbar(t(!values.id ? "error.create" : "error.update"), {
-          variant: "error",
-        });
-      }
-      setSubmitting(false);
-    },
+    onSubmit,
   });
 
   const nameFieldProps = useFormFormikTextFieldProps(formik, "name");
@@ -79,7 +93,7 @@ export const FormUser: React.FC<FormUserProps> = ({ values }) => {
         <div>
           <LoadingButton
             disabled={!formik.dirty}
-            loading={formik.isSubmitting}
+            loading={!values.id ? isLoadingCreateUser : isLoadingUpdateUser}
             color="primary"
             variant="contained"
             type="submit"

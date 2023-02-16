@@ -1,5 +1,5 @@
-import React, { useMemo } from "react";
-import { useFormik } from "formik";
+import React, { useCallback, useEffect, useMemo } from "react";
+import { FormikConfig, useFormik } from "formik";
 import { useFormFormikTextFieldProps } from "../../hooks";
 import TextField from "@mui/material/TextField";
 import LoadingButton from "@mui/lab/LoadingButton";
@@ -9,7 +9,7 @@ import { useSnackbar } from "notistack";
 import * as yup from "yup";
 import { useLoginUserMutation } from "../../services/users";
 import { User } from "../../types/api";
-import { FetchBaseQueryError } from "@reduxjs/toolkit/dist/query";
+import { useMutationsSnackbar } from "../../hooks/snackbar";
 
 export const FormLogin: React.FC = () => {
   const { t } = useTranslation("main", { keyPrefix: "form" });
@@ -39,37 +39,43 @@ export const FormLogin: React.FC = () => {
     []
   );
 
-  const [loginUser] = useLoginUserMutation();
+  const [loginUser, { isLoading, isError }] = useLoginUserMutation();
+  useMutationsSnackbar(false, isError, "", "form.error.login");
+
+  const onSubmit = useCallback<
+    FormikConfig<{ email: string; password: string }>["onSubmit"]
+  >(
+    async (newValues, { resetForm }) => {
+      const resp = await loginUser(newValues);
+      const data = (resp as { data: User })?.data;
+      if (data) {
+        resetForm();
+        enqueueSnackbar(t("success.login", { name: data.name }), {
+          variant: "success",
+        });
+      }
+    },
+    [enqueueSnackbar, loginUser, t]
+  );
 
   const formik = useFormik({
     initialValues,
     validationSchema,
-    onSubmit: async (newValues, { setSubmitting, resetForm }) => {
-      try {
-        const resp = await loginUser(newValues);
-        const error = (resp as { error: FetchBaseQueryError })?.error;
-        if (error) {
-          resetForm({ values: { email: newValues.email, password: "" } });
-          enqueueSnackbar(t("error.login"), {
-            variant: "error",
-          });
-        } else {
-          resetForm();
-          enqueueSnackbar(
-            t("success.login", { name: (resp as { data: User })?.data.name }),
-            {
-              variant: "success",
-            }
-          );
-        }
-      } catch (error) {
-        enqueueSnackbar(t("error.login"), {
-          variant: "error",
-        });
-      }
-      setSubmitting(false);
-    },
+    onSubmit,
   });
+
+  const {
+    resetForm,
+    values: { email },
+  } = formik;
+
+  useEffect(() => {
+    if (isError) {
+      resetForm({
+        values: { email, password: "" },
+      });
+    }
+  }, [email, isError, resetForm]);
 
   const emailFieldProps = useFormFormikTextFieldProps(formik, "email");
   const passwordFiledProps = useFormFormikTextFieldProps(formik, "password");
@@ -90,7 +96,7 @@ export const FormLogin: React.FC = () => {
         <div>
           <LoadingButton
             disabled={!formik.dirty}
-            loading={formik.isSubmitting}
+            loading={isLoading}
             color="primary"
             variant="contained"
             type="submit"

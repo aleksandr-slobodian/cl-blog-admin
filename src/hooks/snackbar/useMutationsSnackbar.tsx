@@ -17,6 +17,7 @@ export function useMutationsSnackbar(
       enqueueSnackbar(t(successAlias), {
         variant: "success",
       });
+      return;
     }
     if (isError) {
       enqueueSnackbar(t(errorAlias), {

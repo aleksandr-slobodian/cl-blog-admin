@@ -17,7 +17,8 @@ export const avatarsApi = appApi.injectEndpoints({
           body,
         };
       },
-      invalidatesTags: [{ type: "Avatars", id: "LIST" }],
+      invalidatesTags: (result, error, id) =>
+        !error ? [{ type: "Avatars", id: "LIST" }] : [],
     }),
     listAvatars: builder.query<Avatar[], AvatarListQueryParams | undefined>({
       query: (params) => ({
