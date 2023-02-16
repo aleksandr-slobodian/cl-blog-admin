@@ -64,10 +64,13 @@ export const postsApi = appApi.injectEndpoints({
           method: "DELETE",
         };
       },
-      invalidatesTags: (result, error, id) => [
-        { type: "Posts", id },
-        { type: "Posts", id: "PARTIAL-LIST" },
-      ],
+      invalidatesTags: (result, error, id) =>
+        !error
+          ? [
+              { type: "Posts", id },
+              { type: "Posts", id: "PARTIAL-LIST" },
+            ]
+          : [],
     }),
   }),
 });

@@ -44,7 +44,8 @@ export const avatarsApi = appApi.injectEndpoints({
           method: "DELETE",
         };
       },
-      invalidatesTags: (result, error, id) => [{ type: "Avatars", id: "LIST" }],
+      invalidatesTags: (result, error, id) =>
+        !error ? [{ type: "Avatars", id: "LIST" }] : [],
     }),
   }),
 });

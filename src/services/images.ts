@@ -24,7 +24,8 @@ export const imagessApi = appApi.injectEndpoints({
           method: "DELETE",
         };
       },
-      invalidatesTags: (result, error, id) => [{ type: "Images", id: "LIST" }],
+      invalidatesTags: (result, error, id) =>
+        !error ? [{ type: "Images", id: "LIST" }] : [],
     }),
   }),
 });

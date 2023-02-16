@@ -82,7 +82,8 @@ export const usersApi = appApi.injectEndpoints({
           }
         });
       },
-      invalidatesTags: (result, error, { id }) => [{ type: "Users", id }],
+      invalidatesTags: (result, error, { id }) =>
+        !error ? [{ type: "Users", id }] : [],
     }),
     deleteUser: builder.mutation<{ success: boolean; id: string }, string>({
       query(id) {
@@ -91,10 +92,13 @@ export const usersApi = appApi.injectEndpoints({
           method: "DELETE",
         };
       },
-      invalidatesTags: (result, error, id) => [
-        { type: "Users", id },
-        { type: "Users", id: "PARTIAL-LIST" },
-      ],
+      invalidatesTags: (result, error, id) =>
+        !error
+          ? [
+              { type: "Users", id },
+              { type: "Users", id: "PARTIAL-LIST" },
+            ]
+          : [],
     }),
   }),
 });

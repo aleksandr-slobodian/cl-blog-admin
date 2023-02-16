@@ -47,10 +47,13 @@ export const categoriesApi = appApi.injectEndpoints({
           method: "DELETE",
         };
       },
-      invalidatesTags: (result, error, id) => [
-        { type: "Categories", id },
-        { type: "Categories", id: "LIST" },
-      ],
+      invalidatesTags: (result, error, id) =>
+        !error
+          ? [
+              { type: "Categories", id },
+              { type: "Categories", id: "LIST" },
+            ]
+          : [],
     }),
   }),
 });

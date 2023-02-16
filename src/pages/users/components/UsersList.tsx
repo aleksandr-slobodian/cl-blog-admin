@@ -1,46 +1,38 @@
 import Divider from "@mui/material/Divider";
-import React, { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import DialogConfirm from "../../../components/dialog-confirm/DialogConfirm";
-import { useAppDispatch, useAppSelector } from "../../../hooks";
 import { useDeleteUserMutation } from "../../../services/users";
-import { closeDialog, openDialog, selectDialog } from "../../../state/dialog";
 import { User } from "../../../types/api";
 import { UserListItem } from "./UserListItem";
-import { useSnackbar } from "notistack";
+import { useDialogConfirm } from "../../../hooks/dialog-confirm";
+import { useMutationsSnackbar } from "../../../hooks/snackbar";
 
 interface UsersListProps {
   users?: User[];
 }
 
 export const UsersList: React.FC<UsersListProps> = ({ users }) => {
-  const [deleteUser, { isLoading: isDeleting }] = useDeleteUserMutation();
+  const [deleteUser, { isLoading: isDeleting, isSuccess, isError }] =
+    useDeleteUserMutation();
+
+  const { isOpen, dialogData, handleOpenDialog, handleCloseDialog } =
+    useDialogConfirm(
+      "delete-user-dialog",
+      "dialog.misc.text.delete",
+      deleteUser
+    );
+
+  useMutationsSnackbar(
+    isSuccess,
+    isError,
+    "form.success.delete",
+    "form.error.delete"
+  );
+
   const { t } = useTranslation("main", {
     keyPrefix: "dialog.misc",
   });
-  const { t: tf } = useTranslation("main", { keyPrefix: "form" });
-  const { enqueueSnackbar } = useSnackbar();
 
-  const { isOpen, options } = useAppSelector(selectDialog);
-  const dispatch = useAppDispatch();
-  const handleClose = useCallback(
-    async (isAgree: boolean) => {
-      if (isAgree && options?.id) {
-        try {
-          await deleteUser(options.id);
-          enqueueSnackbar(tf("success.delete"), {
-            variant: "success",
-          });
-        } catch (error) {
-          enqueueSnackbar(tf("error.delete"), {
-            variant: "success",
-          });
-        }
-      }
-      dispatch(closeDialog());
-    },
-    [deleteUser, dispatch, enqueueSnackbar, options?.id, tf]
-  );
   if (!users?.length) {
     return <div>No data!</div>;
   }
@@ -52,22 +44,15 @@ export const UsersList: React.FC<UsersListProps> = ({ users }) => {
           key={`ulst-${user.id}`}
           {...user}
           user={user}
-          isDeleting={isDeleting}
-          deleteAction={(id, title) => {
-            dispatch(
-              openDialog({
-                text: t<string>("text.delete", { item: title }),
-                id,
-              })
-            );
-          }}
+          isDeleting={dialogData?.id === user.id && isDeleting}
+          deleteAction={handleOpenDialog}
         />
       ))}
       <DialogConfirm
         open={isOpen}
-        onClose={handleClose}
+        onClose={handleCloseDialog}
         title={t<string>("title.attention")}
-        text={options?.text || ""}
+        text={dialogData?.text || ""}
       />
     </div>
   );

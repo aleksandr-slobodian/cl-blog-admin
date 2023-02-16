@@ -1,49 +1,43 @@
-import React, { useCallback } from "react";
+import React from "react";
 import { useTranslation } from "react-i18next";
 import { PostListItem } from "./PostListItem";
-import { useSnackbar } from "notistack";
 import { Post } from "../../types/api";
 import { useDeletePostMutation } from "../../services/posts";
-import { useAppDispatch, useAppSelector } from "../../hooks";
-import { closeDialog, openDialog, selectDialog } from "../../state/dialog";
 import DialogConfirm from "../dialog-confirm/DialogConfirm";
 import Stack from "@mui/material/Stack";
+import { useDialogConfirm } from "../../hooks/dialog-confirm";
+import { useMutationsSnackbar } from "../../hooks/snackbar";
 
 interface PostsListProps {
   data?: Post[];
 }
 
 export const PostsList: React.FC<PostsListProps> = ({ data }) => {
-  const [deleteUser, { isLoading: isDeleting }] = useDeletePostMutation();
+  const [deletePost, { isLoading: isDeleting, isSuccess, isError }] =
+    useDeletePostMutation();
+
+  const { isOpen, dialogData, handleOpenDialog, handleCloseDialog } =
+    useDialogConfirm(
+      "delete-post-dialog",
+      "dialog.misc.text.delete",
+      deletePost
+    );
+
+  useMutationsSnackbar(
+    isSuccess,
+    isError,
+    "form.success.delete",
+    "form.error.delete"
+  );
+
   const { t } = useTranslation("main", {
     keyPrefix: "dialog.misc",
   });
-  const { t: tf } = useTranslation("main", { keyPrefix: "form" });
-  const { enqueueSnackbar } = useSnackbar();
 
-  const { isOpen, options } = useAppSelector(selectDialog);
-  const dispatch = useAppDispatch();
-  const handleClose = useCallback(
-    async (isAgree: boolean) => {
-      if (isAgree && options?.id) {
-        try {
-          await deleteUser(options.id);
-          enqueueSnackbar(tf("success.delete"), {
-            variant: "success",
-          });
-        } catch (error) {
-          enqueueSnackbar(tf("error.delete"), {
-            variant: "success",
-          });
-        }
-      }
-      dispatch(closeDialog());
-    },
-    [deleteUser, dispatch, enqueueSnackbar, options?.id, tf]
-  );
   if (!data?.length) {
     return <div>No data!</div>;
   }
+
   return (
     <div>
       <Stack sx={{ flexWrap: "wrap", flexDirection: "row", gap: 3 }}>
@@ -51,23 +45,16 @@ export const PostsList: React.FC<PostsListProps> = ({ data }) => {
           <PostListItem
             key={`ulst-${post.id}`}
             post={post}
-            isDeleting={isDeleting}
-            deleteAction={(id, title) => {
-              dispatch(
-                openDialog({
-                  text: t<string>("text.delete", { item: title }),
-                  id,
-                })
-              );
-            }}
+            isDeleting={dialogData?.id === post.id && isDeleting}
+            deleteAction={handleOpenDialog}
           />
         ))}
       </Stack>
       <DialogConfirm
         open={isOpen}
-        onClose={handleClose}
+        onClose={handleCloseDialog}
         title={t<string>("title.attention")}
-        text={options?.text || ""}
+        text={dialogData?.text || ""}
       />
     </div>
   );

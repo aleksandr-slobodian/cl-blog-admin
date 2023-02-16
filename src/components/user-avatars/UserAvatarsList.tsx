@@ -1,20 +1,14 @@
 import { LoadingButton } from "@mui/lab";
 import Stack from "@mui/material/Stack";
-import { useSnackbar } from "notistack";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useAppDispatch, useAppSelector } from "../../hooks";
+import { useDialogConfirm } from "../../hooks/dialog-confirm";
+import { useMutationsSnackbar } from "../../hooks/snackbar";
 import {
   useDeleteAvatarMutation,
   useListAvatarsQuery,
 } from "../../services/avatars";
 import { useUpdateUserMutation } from "../../services/users";
-import {
-  closeDrawer,
-  openDrawer,
-  selectDrawerById,
-  selectDrawers,
-} from "../../state/drawers";
 import { Avatar, User } from "../../types/api";
 import DialogConfirm from "../dialog-confirm/DialogConfirm";
 import UserAvatarsListItem from "./UserAvatarsListItem";
@@ -38,8 +32,14 @@ export const UserAvatarsList: React.FC<UserAvatarsListProps> = ({
     }
   }, [avatar, data]);
 
-  const [deleteAvatar, { isLoading: isLoadingDeleteAvatar }] =
-    useDeleteAvatarMutation();
+  const [
+    deleteAvatar,
+    {
+      isLoading: isLoadingDeleteAvatar,
+      isSuccess: isSuccessDeleteAvatar,
+      isError: isErrorDeleteAvatar,
+    },
+  ] = useDeleteAvatarMutation();
 
   const handleClick = useCallback((avatar: Avatar) => {
     setSelected(avatar);
@@ -49,74 +49,67 @@ export const UserAvatarsList: React.FC<UserAvatarsListProps> = ({
     keyPrefix: "dialog.misc",
   });
   const { t: tf } = useTranslation("main", { keyPrefix: "form" });
-  const { enqueueSnackbar } = useSnackbar();
 
   const isButtonDeleteDisabled = !selected?.name || avatar === selected?.name;
 
-  const drawers = useAppSelector(selectDrawers);
-  const { isOpen, data: dialogData } =
-    selectDrawerById(drawers, "delete-avatar-dialog") || {};
+  const { isOpen, dialogData, handleOpenDialog, handleCloseDialog } =
+    useDialogConfirm(
+      "delete-avatar-dialog",
+      "dialog.misc.text.delete",
+      deleteAvatar
+    );
 
-  const dispatch = useAppDispatch();
-  const handleOnDeleteClose = useCallback(
-    async (isAgree: boolean) => {
-      dispatch(closeDrawer({ name: "delete-avatar-dialog" }));
-      if (isAgree && selected) {
-        try {
-          await deleteAvatar(selected.id);
-          enqueueSnackbar(tf("success.delete"), {
-            variant: "success",
-          });
-        } catch (error) {
-          enqueueSnackbar(tf("error.delete"), {
-            variant: "success",
-          });
-        }
-      }
-    },
-    [deleteAvatar, dispatch, enqueueSnackbar, selected, tf]
+  useMutationsSnackbar(
+    isSuccessDeleteAvatar,
+    isErrorDeleteAvatar,
+    "form.success.delete",
+    "form.error.delete"
   );
 
   const handleOpenDeleteDialog = useCallback(() => {
-    dispatch(
-      openDrawer({
-        name: "delete-avatar-dialog",
-        data: {
-          text: t("text.delete", { item: selected?.originalname }),
-        },
-      })
-    );
-  }, [dispatch, selected, t]);
-
-  const [updateUser, { isLoading: isLoadingApplyAvatar }] =
-    useUpdateUserMutation();
-  const handleApply = useCallback(async () => {
-    if (id) {
-      try {
-        updateUser({ avatar: selected?.name, id });
-        enqueueSnackbar(tf("success.update"), {
-          variant: "success",
-        });
-      } catch (error) {
-        enqueueSnackbar(tf("error.update"), {
-          variant: "success",
-        });
-      }
+    if (selected) {
+      handleOpenDialog(selected?.id, selected?.originalname);
     }
-  }, [enqueueSnackbar, id, selected?.name, tf, updateUser]);
+  }, [handleOpenDialog, selected]);
+
+  const [
+    updateUser,
+    {
+      isLoading: isLoadingApplyAvatar,
+      isSuccess: isSuccessApplyAvatar,
+      isError: isErrorApplyAvatar,
+    },
+  ] = useUpdateUserMutation();
+  const handleApply = useCallback(() => {
+    if (id) {
+      updateUser({ avatar: selected?.name, id });
+    }
+  }, [id, selected?.name, updateUser]);
+
+  useMutationsSnackbar(
+    isSuccessApplyAvatar,
+    isErrorApplyAvatar,
+    "form.success.update",
+    "form.error.update"
+  );
+
+  const emptyAvatar = useMemo(
+    () => ({
+      id: "",
+      name: "",
+      originalname: "",
+      userId: "",
+      date: 0,
+    }),
+    []
+  );
 
   return (
     <Stack gap={3}>
       <Stack flexDirection="row" flexWrap="wrap" gap={1}>
         <UserAvatarsListItem
           key={`itm-avtr-0`}
-          avatar={{
-            id: "",
-            name: "",
-            originalname: "",
-            userId: "",
-            date: 0,
-          }}
+          avatar={emptyAvatar}
           isSelected={!selected?.name}
           onItemClick={handleClick}
         />
@@ -149,7 +142,7 @@ export const UserAvatarsList: React.FC<UserAvatarsListProps> = ({
       </Stack>
       <DialogConfirm
         open={isOpen}
-        onClose={handleOnDeleteClose}
+        onClose={handleCloseDialog}
         title={t<string>("title.attention")}
         text={dialogData?.text || ""}
       />

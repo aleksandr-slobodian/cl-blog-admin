@@ -1,16 +1,15 @@
-import React, { useCallback } from "react";
+import React from "react";
 import { useTranslation } from "react-i18next";
 import DialogConfirm from "../dialog-confirm/DialogConfirm";
-import { useAppDispatch, useAppSelector } from "../../hooks";
-import { closeDialog, openDialog, selectDialog } from "../../state/dialog";
 import { ImageListItem } from "./components/ImageListItem";
-import { useSnackbar } from "notistack";
 import {
   useDeleteImageMutation,
   useListImagesQuery,
 } from "../../services/images";
 import { VirtuosoGrid } from "react-virtuoso";
 import styled from "@emotion/styled";
+import { useDialogConfirm } from "../../hooks/dialog-confirm";
+import { useMutationsSnackbar } from "../../hooks/snackbar";
 
 const ListContainer = styled.div`
   display: flex;
@@ -24,32 +23,24 @@ interface ImagesListProps {
 
 export const ImagesList: React.FC<ImagesListProps> = ({ onItemClick }) => {
   const { data, error } = useListImagesQuery();
-  const [deleteImage, { isLoading: isDeleting }] = useDeleteImageMutation();
+  const [deleteImage, { isLoading: isDeleting, isSuccess, isError }] =
+    useDeleteImageMutation();
   const { t } = useTranslation("main", {
     keyPrefix: "dialog.misc",
   });
-  const { t: tf } = useTranslation("main", { keyPrefix: "form" });
-  const { enqueueSnackbar } = useSnackbar();
 
-  const { isOpen, options } = useAppSelector(selectDialog);
-  const dispatch = useAppDispatch();
-  const handleClose = useCallback(
-    async (isAgree: boolean) => {
-      if (isAgree && options?.id) {
-        try {
-          await deleteImage(options.id);
-          enqueueSnackbar(tf("success.delete"), {
-            variant: "success",
-          });
-        } catch (error) {
-          enqueueSnackbar(tf("error.delete"), {
-            variant: "success",
-          });
-        }
-      }
-      dispatch(closeDialog());
-    },
-    [deleteImage, dispatch, enqueueSnackbar, options?.id, tf]
+  const { isOpen, dialogData, handleOpenDialog, handleCloseDialog } =
+    useDialogConfirm(
+      "delete-image-dialog",
+      "dialog.misc.text.delete",
+      deleteImage
+    );
+
+  useMutationsSnackbar(
+    isSuccess,
+    isError,
+    "form.success.delete",
+    "form.error.delete"
   );
 
   if (!data?.length || error) {
@@ -69,24 +60,17 @@ export const ImagesList: React.FC<ImagesListProps> = ({ onItemClick }) => {
           <ImageListItem
             key={`imglst-${image.id}`}
             image={image}
-            isDeleting={isDeleting}
+            isDeleting={dialogData?.id === image.id && isDeleting}
             clickAction={onItemClick ? (name) => onItemClick(name) : undefined}
-            deleteAction={(id, title) => {
-              dispatch(
-                openDialog({
-                  text: t<string>("text.delete", { item: title }),
-                  id,
-                })
-              );
-            }}
+            deleteAction={handleOpenDialog}
           />
         )}
       />
       <DialogConfirm
         open={isOpen}
-        onClose={handleClose}
+        onClose={handleCloseDialog}
         title={t<string>("title.attention")}
-        text={options?.text || ""}
+        text={dialogData?.text || ""}
       />
     </>
   );
