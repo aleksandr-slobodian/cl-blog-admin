@@ -12,6 +12,7 @@ import LexicalEditorRefPlugin, {
   LexicalEditorRefPluginHandle,
 } from "./plugins/LexicalEditorRefPlugin";
 import RTEditorPlaceholder from "./components/RTEditorPlaceholder";
+import RTEditorToolbar from "./components/RTEditorToolbar";
 
 interface RTEditorProps {
   placeholder?: string;
@@ -43,6 +44,7 @@ export const RTEditor = forwardRef<RTEditorHandle, RTEditorProps>(
     return (
       <LexicalComposer initialConfig={editorConfig}>
         <Box className="editor-container">
+          <RTEditorToolbar />
           <Box sx={editorInnerStyles}>
             <RichTextPlugin
               contentEditable={<ContentEditable className="editor-input" />}

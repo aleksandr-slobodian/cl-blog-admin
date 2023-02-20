@@ -1,9 +1,9 @@
 import React, {
-  createRef,
   forwardRef,
   useCallback,
   useImperativeHandle,
   useMemo,
+  useRef,
   useState,
 } from "react";
 import {
@@ -49,7 +49,7 @@ export const AvatarEditor = forwardRef<AvatarEditorHandle, AvatarEditorProps>(
 
     const [image, setImage] = useState<File>();
 
-    const editor = createRef<AvatarEditorCore>();
+    const editor = useRef<AvatarEditorCore>(null);
 
     useImperativeHandle(
       ref,

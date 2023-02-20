@@ -1,6 +1,6 @@
 import IconButton from "@mui/material/IconButton";
 import Stack from "@mui/system/Stack";
-import React, { useCallback, useMemo } from "react";
+import React, { SyntheticEvent, useCallback, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { APP_PATH_USER, AVATARS_BASE_PATH } from "../../config";
 import { useAppSelector } from "../../hooks";
@@ -30,12 +30,16 @@ export const UserAvatarIconButton: React.FC<UserAvatarIconButtonProps> = ({
   );
   const navigate = useNavigate();
 
-  const handleClick = useCallback(() => {
-    navigate(href);
-    if (onClick) {
-      onClick();
-    }
-  }, [href, navigate, onClick]);
+  const handleClick = useCallback(
+    (event: SyntheticEvent) => {
+      event.preventDefault();
+      navigate(href);
+      if (onClick) {
+        onClick();
+      }
+    },
+    [href, navigate, onClick]
+  );
 
   const Label = useMemo(
     () => (

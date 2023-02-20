@@ -23,6 +23,27 @@ export function useEditorStyles() {
           marginBottom: 0,
         },
       },
+      "& .editor-text-bold": {
+        fontWeight: "bold",
+      },
+      "& .editor-text-italic": {
+        fontStyle: "italic",
+      },
+      "& .editor-text-underline": {
+        textDecoration: "underline",
+      },
+      "& .editor-text-strikethrough": {
+        textDecoration: "line-through",
+      },
+      "& .editor-text-underlineStrikethrough": {
+        textDecoration: "underline line-through",
+      },
+      "& .editor-text-code": {
+        background: theme.palette.divider,
+        padding: "1px 0.25rem",
+        fontFamily: "Menlo, Consolas, Monaco, monospace",
+        fontSize: "94%",
+      },
     }),
     []
   );
