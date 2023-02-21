@@ -1,8 +1,8 @@
 import React, { useCallback, useEffect, useState } from "react";
-import IconButton from "@mui/material/IconButton";
 import RedoIcon from "@mui/icons-material/Redo";
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
 import { CAN_REDO_COMMAND, REDO_COMMAND } from "lexical";
+import RTEditorButton from "../button/RTEditorButton";
 
 export const RTEditorButtonRedo: React.FC<{ title?: string }> = ({ title }) => {
   const [editor] = useLexicalComposerContext();
@@ -24,14 +24,9 @@ export const RTEditorButtonRedo: React.FC<{ title?: string }> = ({ title }) => {
   }, [editor]);
 
   return (
-    <IconButton
-      title={title}
-      disabled={!canRedo}
-      sx={{ borderRadius: 1 }}
-      onClick={handleClick}
-    >
+    <RTEditorButton title={title} disabled={!canRedo} onClick={handleClick}>
       <RedoIcon />
-    </IconButton>
+    </RTEditorButton>
   );
 };
 

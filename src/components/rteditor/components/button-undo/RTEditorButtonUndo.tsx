@@ -1,8 +1,8 @@
 import React, { useCallback, useEffect, useState } from "react";
-import IconButton from "@mui/material/IconButton";
 import UndoIcon from "@mui/icons-material/Undo";
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
 import { CAN_UNDO_COMMAND, UNDO_COMMAND } from "lexical";
+import RTEditorButton from "../button/RTEditorButton";
 
 export const RTEditorButtonUndo: React.FC<{ title?: string }> = ({ title }) => {
   const [editor] = useLexicalComposerContext();
@@ -24,14 +24,9 @@ export const RTEditorButtonUndo: React.FC<{ title?: string }> = ({ title }) => {
   }, [editor]);
 
   return (
-    <IconButton
-      title={title}
-      disabled={!canUndo}
-      sx={{ borderRadius: 1 }}
-      onClick={handleClick}
-    >
+    <RTEditorButton title={title} disabled={!canUndo} onClick={handleClick}>
       <UndoIcon />
-    </IconButton>
+    </RTEditorButton>
   );
 };
 
