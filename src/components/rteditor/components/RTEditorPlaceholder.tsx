@@ -1,23 +1,20 @@
 import Box from "@mui/material/Box";
-import { SxProps, Theme } from "@mui/material/styles";
-import { useMemo } from "react";
+import { styled } from "@mui/material/styles";
+
+const PlaceholderBox = styled(Box)(({ theme }) => ({
+  color: theme.palette.text.disabled,
+  overflow: "hidden",
+  position: "absolute",
+  textOverflow: "ellipsis",
+  top: theme.spacing(2),
+  left: theme.spacing(1.5),
+  userSelect: "none",
+  display: "inline-block",
+  pointerEvents: "none",
+}));
 
 export const RTEditorPlaceholder: React.FC<{ text: string }> = ({ text }) => {
-  const placeholderStyles = useMemo<SxProps<Theme>>(
-    () => (theme) => ({
-      color: "text.disabled",
-      overflow: "hidden",
-      position: "absolute",
-      textOverflow: "ellipsis",
-      top: theme.spacing(2),
-      left: theme.spacing(1.5),
-      userSelect: "none",
-      display: "inline-block",
-      pointerEvents: "none",
-    }),
-    []
-  );
-  return <Box sx={placeholderStyles}>{text}</Box>;
+  return <PlaceholderBox>{text}</PlaceholderBox>;
 };
 
 export default RTEditorPlaceholder;

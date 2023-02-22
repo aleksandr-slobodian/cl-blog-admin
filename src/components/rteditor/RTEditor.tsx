@@ -7,12 +7,12 @@ import { HistoryPlugin } from "@lexical/react/LexicalHistoryPlugin";
 import { AutoFocusPlugin } from "@lexical/react/LexicalAutoFocusPlugin";
 import LexicalErrorBoundary from "@lexical/react/LexicalErrorBoundary";
 import Box from "@mui/material/Box";
-import useEditorStyles from "./useEditorStyles";
 import LexicalEditorRefPlugin, {
   LexicalEditorRefPluginHandle,
 } from "./plugins/LexicalEditorRefPlugin";
 import RTEditorPlaceholder from "./components/RTEditorPlaceholder";
 import RTEditorToolbar from "./components/RTEditorToolbar";
+import RTEditorBox from "./components/editor-box/RTEditorBox";
 
 interface RTEditorProps {
   placeholder?: string;
@@ -39,13 +39,11 @@ export const RTEditor = forwardRef<RTEditorHandle, RTEditorProps>(
       []
     );
 
-    const { editorInnerStyles } = useEditorStyles();
-
     return (
       <LexicalComposer initialConfig={editorConfig}>
         <Box className="editor-container">
           <RTEditorToolbar />
-          <Box sx={editorInnerStyles}>
+          <RTEditorBox>
             <RichTextPlugin
               contentEditable={<ContentEditable className="editor-input" />}
               placeholder={<RTEditorPlaceholder text={placeholder || ""} />}
@@ -54,7 +52,7 @@ export const RTEditor = forwardRef<RTEditorHandle, RTEditorProps>(
             <HistoryPlugin />
             {autoFocus ? <AutoFocusPlugin /> : null}
             <LexicalEditorRefPlugin ref={editorRef} />
-          </Box>
+          </RTEditorBox>
         </Box>
       </LexicalComposer>
     );

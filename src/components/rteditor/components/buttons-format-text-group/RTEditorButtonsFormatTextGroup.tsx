@@ -4,6 +4,7 @@ import {
   $getSelection,
   $isRangeSelection,
   SELECTION_CHANGE_COMMAND,
+  COMMAND_PRIORITY_LOW,
 } from "lexical";
 import { mergeRegister } from "@lexical/utils";
 import { FORMAT_TEXT_COMMAND } from "lexical";
@@ -78,7 +79,7 @@ export const RTEditorButtonsFormatTextGroup: React.FC = () => {
           updateButtons();
           return true;
         },
-        1
+        COMMAND_PRIORITY_LOW
       )
     );
   }, [editor, updateButtons]);

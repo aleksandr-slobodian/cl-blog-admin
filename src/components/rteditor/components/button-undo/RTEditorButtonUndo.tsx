@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import UndoIcon from "@mui/icons-material/Undo";
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
-import { CAN_UNDO_COMMAND, UNDO_COMMAND } from "lexical";
+import { CAN_UNDO_COMMAND, UNDO_COMMAND, COMMAND_PRIORITY_LOW } from "lexical";
 import RTEditorButton from "../button/RTEditorButton";
 
 export const RTEditorButtonUndo: React.FC<{ title?: string }> = ({ title }) => {
@@ -15,7 +15,7 @@ export const RTEditorButtonUndo: React.FC<{ title?: string }> = ({ title }) => {
         setCanUndo(payload);
         return false;
       },
-      1
+      COMMAND_PRIORITY_LOW
     );
   }, [editor]);
 

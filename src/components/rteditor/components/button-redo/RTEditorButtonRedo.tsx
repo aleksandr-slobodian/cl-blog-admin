@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import RedoIcon from "@mui/icons-material/Redo";
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
-import { CAN_REDO_COMMAND, REDO_COMMAND } from "lexical";
+import { CAN_REDO_COMMAND, REDO_COMMAND, COMMAND_PRIORITY_LOW } from "lexical";
 import RTEditorButton from "../button/RTEditorButton";
 
 export const RTEditorButtonRedo: React.FC<{ title?: string }> = ({ title }) => {
@@ -15,7 +15,7 @@ export const RTEditorButtonRedo: React.FC<{ title?: string }> = ({ title }) => {
         setCanRedo(payload);
         return false;
       },
-      1
+      COMMAND_PRIORITY_LOW
     );
   }, [editor]);
 
