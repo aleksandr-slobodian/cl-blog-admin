@@ -5,6 +5,7 @@ import React from "react";
 import RTEditorButtonRedo from "./button-redo/RTEditorButtonRedo";
 import RTEditorButtonUndo from "./button-undo/RTEditorButtonUndo";
 import RTEditorButtonsFormatAlignGroup from "./buttons-format-align-group/RTEditorButtonsFormatAlignGroup";
+import RTEditorButtonsFormatBlockTypeMenu from "./buttons-format-block-type-menu/RTEditorButtonsFormatBlockTypeMenu";
 import RTEditorButtonsFormatTextGroup from "./buttons-format-text-group/RTEditorButtonsFormatTextGroup";
 
 export const RTEditorToolbar: React.FC = () => {
@@ -14,6 +15,7 @@ export const RTEditorToolbar: React.FC = () => {
         <RTEditorButtonUndo />
         <RTEditorButtonRedo />
       </ButtonGroup>
+      <RTEditorButtonsFormatBlockTypeMenu />
       <RTEditorButtonsFormatTextGroup />
       <RTEditorButtonsFormatAlignGroup />
     </Stack>

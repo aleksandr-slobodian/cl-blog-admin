@@ -6,6 +6,8 @@ import { ContentEditable } from "@lexical/react/LexicalContentEditable";
 import { HistoryPlugin } from "@lexical/react/LexicalHistoryPlugin";
 import { AutoFocusPlugin } from "@lexical/react/LexicalAutoFocusPlugin";
 import LexicalErrorBoundary from "@lexical/react/LexicalErrorBoundary";
+import { ListPlugin } from "@lexical/react/LexicalListPlugin";
+
 import Box from "@mui/material/Box";
 import LexicalEditorRefPlugin, {
   LexicalEditorRefPluginHandle,
@@ -52,6 +54,7 @@ export const RTEditor = forwardRef<RTEditorHandle, RTEditorProps>(
             <HistoryPlugin />
             {autoFocus ? <AutoFocusPlugin /> : null}
             <LexicalEditorRefPlugin ref={editorRef} />
+            <ListPlugin />
           </RTEditorBox>
         </Box>
       </LexicalComposer>

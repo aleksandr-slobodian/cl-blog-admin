@@ -17,7 +17,7 @@ import FormatAlignJustifyIcon from "@mui/icons-material/FormatAlignJustify";
 import { RTEditorFormatAlignType } from "./types";
 import { ToggleButton, ToggleButtonGroup } from "@mui/material";
 
-import { getSelectedDomElement } from "../../utils";
+import { getSelectedElement } from "../../utils";
 
 export const RTEditorButtonsFormatAlignGroup: React.FC = () => {
   const [editor] = useLexicalComposerContext();
@@ -54,7 +54,7 @@ export const RTEditorButtonsFormatAlignGroup: React.FC = () => {
   const updateButtons = useCallback(() => {
     const selection = $getSelection();
     if ($isRangeSelection(selection)) {
-      const elementDOM = getSelectedDomElement(selection, editor);
+      const { elementDOM } = getSelectedElement(selection, editor);
       if (elementDOM !== null) {
         const align = elementDOM.style.textAlign as RTEditorFormatAlignType;
         setTextFormats(align || "left");

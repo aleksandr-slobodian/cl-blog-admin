@@ -1,4 +1,6 @@
 import editorTheme from "./editorTheme";
+import { HeadingNode, QuoteNode } from "@lexical/rich-text";
+import { ListItemNode, ListNode } from "@lexical/list";
 
 export const editorConfig = {
   namespace: "RTEditor",
@@ -6,7 +8,7 @@ export const editorConfig = {
   onError(error: Error) {
     throw error;
   },
-  nodes: [],
+  nodes: [HeadingNode, ListNode, ListItemNode, QuoteNode],
 };
 
 export default editorConfig;

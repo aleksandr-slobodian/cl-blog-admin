@@ -20,6 +20,7 @@ export const RTEditorBox = styled(Box)(({ theme }) => ({
   },
   "& .editor-paragraph": {
     marginTop: 0,
+    marginBottom: theme.spacing(2),
     "&:last-child": {
       marginBottom: 0,
     },
@@ -44,6 +45,14 @@ export const RTEditorBox = styled(Box)(({ theme }) => ({
     padding: "1px 0.25rem",
     fontFamily: "Menlo, Consolas, Monaco, monospace",
     fontSize: "94%",
+  },
+  "& .editor-quote": {
+    margin: theme.spacing(1),
+    marginLeft: theme.spacing(2),
+    borderLeftColor: theme.palette.divider,
+    borderLeftWidth: "4px",
+    borderLeftStyle: "solid",
+    paddingLeft: theme.spacing(2),
   },
 }));
 

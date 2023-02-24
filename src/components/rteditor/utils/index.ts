@@ -1,18 +1,26 @@
+import { $isRootOrShadowRoot } from "lexical";
 import { LexicalEditor } from "lexical/LexicalEditor";
 import { RangeSelection } from "lexical/LexicalSelection";
-
+import { $findMatchingParent } from "@lexical/utils";
 type EditorSelection = RangeSelection | null;
-export function getSelectedDomElement(
+export function getSelectedElement(
   selection: EditorSelection,
   editor: LexicalEditor
 ) {
-  if (!selection) return null;
+  if (!selection) return { elementDOM: null, element: null, anchorNode: null };
   const anchorNode = selection.anchor.getNode();
-  const element =
+  let element =
     anchorNode.getKey() === "root"
       ? anchorNode
-      : anchorNode.getTopLevelElementOrThrow();
+      : $findMatchingParent(anchorNode, (e) => {
+          const parent = e.getParent();
+          return parent !== null && $isRootOrShadowRoot(parent);
+        });
+
+  if (element === null) {
+    element = anchorNode.getTopLevelElementOrThrow();
+  }
   const elementKey = element.getKey();
   const elementDOM = editor.getElementByKey(elementKey);
-  return elementDOM;
+  return { elementDOM, element, anchorNode };
 }
